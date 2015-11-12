@@ -2,7 +2,7 @@
 ###### 计划开发一款用于记录和同步网络书签的Web应用。
 * 架构选取基于Restful风格的Web API来实现；
 * 后端采用Node.js+MongoDB+Redis；
-* 前端主要使用Angular Sass；
+* 前端主要使用Angular+Sass；
 * 工具用到 Git+Yeoman+Grunt+Bower。
 <hr>
 
