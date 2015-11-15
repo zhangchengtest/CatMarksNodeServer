@@ -1,7 +1,9 @@
-var SqlOperation=require('../mongodb/mongosql.js');
+var SqlOperation=require('../mongodb/sqloperation.js');
 var SqlOperation=new SqlOperation();
 //新增数据
-SqlOperation.insert('users',[{name:"hehehhe"},{name:"hahahaha"}],function(){
+SqlOperation.insert('users',[{name:"hehehhe"},{name:"hahahaha"}],function(result){
+  console.log("\033[36m" + "insertResults" + "/\033[39m");
+  console.log(results);
   SqlOperation.findAll('users',function(){
     console.log("============end=============");
   });

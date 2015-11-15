@@ -2,7 +2,7 @@
 var MongoClient = require('mongodb').MongoClient,
   assert = require('assert'),
   config = require('../config/config.js');
-// Connection URL
+//connetction url
 var url = config.db.uri + ':' + config.db.port;
 //exports
 var SqlOperation = function() {};
@@ -14,10 +14,8 @@ SqlOperation.prototype.insert = function(collectionName, insertString, callback)
     assert.equal(null, err);
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
     insert(db, collectionName, insertString, function(results) {
-      console.log("\033[36m" + "insertResults" + "/\033[39m");
-      console.log(results);
       db.close();
-      callback();
+      callback(results);
     });
   });
 };
@@ -26,10 +24,8 @@ SqlOperation.prototype.update = function(collectionName, queryString, updateStri
     assert.equal(null, err);
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
     update(db, collectionName, queryString, updateString, function(results) {
-      console.log("\033[36m" + "updateResults" + "/\033[39m");
-      console.log(results);
       db.close();
-      callback();
+      callback(results);
     })
   });
 };
@@ -38,10 +34,8 @@ SqlOperation.prototype.replace = function(collectionName, queryString, replaceSt
     assert.equal(null, err);
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
     replaceOne(db, collectionName, queryString, replaceString, function(results) {
-      console.log("\033[36m" + "replaceResults" + "/\033[39m");
-      console.log(results);
       db.close();
-      callback();
+      callback(results);
     })
   });
 };
@@ -70,10 +64,8 @@ SqlOperation.prototype.removeOne = function(collectionName, queryString, callbac
     assert.equal(null, err);
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
     removeOne(db, collectionName, queryString, function(results) {
-      console.log("\033[36m" + "removeOneResults" + "/\033[39m");
-      console.log(results);
       db.close();
-      callback();
+      callback(results);
     })
   });
 };
@@ -82,10 +74,8 @@ SqlOperation.prototype.removeMany = function(collectionName, queryString, callba
     assert.equal(null, err);
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
     removeMany(db, collectionName, queryString, function(results) {
-      console.log("\033[36m" + "removeManyResults" + "/\033[39m");
-      console.log(results);
       db.close();
-      callback();
+      callback(results);
     })
   });
 };
