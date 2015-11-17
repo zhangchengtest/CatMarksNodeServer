@@ -1,7 +1,9 @@
 //require
 var MongoClient = require('mongodb').MongoClient,
   assert = require('assert'),
+  mongodb = require('mongodb'),
   config = require('../config/config.js');
+
 //connetction url
 var url = config.db.uri + ':' + config.db.port;
 //exports
@@ -9,6 +11,9 @@ var SqlOperation = function() {};
 module.exports = SqlOperation;
 
 //exports function
+SqlOperation.prototype.ObjectID = function(id) {
+  return mongodb.ObjectID(id);
+}
 SqlOperation.prototype.insert = function(collectionName, insertString, callback) {
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
@@ -43,9 +48,9 @@ SqlOperation.prototype.findAll = function(collectionName, callback) {
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
-    findAll(db, collectionName, function() {
+    findAll(db, collectionName, function(results) {
       db.close();
-      callback();
+      callback(results);
     })
   });
 };
@@ -53,9 +58,9 @@ SqlOperation.prototype.findSpecify = function(collectionName, queryString, callb
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
-    findSpecify(db, collectionName, queryString, function() {
+    findSpecify(db, collectionName, queryString, function(results) {
       db.close();
-      callback();
+      callback(results);
     })
   });
 };
@@ -109,26 +114,31 @@ var insertDocuments = function(db, collectionName, insertString, callback) {
   }
   //find
 var findAll = function(db, collectionName, callback) {
+  var returnResult = [];
   var cursor = db.collection(collectionName).find();
   console.log("find all documents in " + collectionName + " collection");
   cursor.each(function(err, result) {
     assert.equal(err, null);
     if (result != null) {
       console.log(result);
+      returnResult.push(result);
     } else {
-      callback();
+      callback(returnResult);
     }
   });
 };
 var findSpecify = function(db, collectionName, queryString, callback) {
+  var returnResult;
+  //var objectId = new mongo.ObjectID(queryString._id);
   var cursor = db.collection(collectionName).find(queryString);
   console.log("find " + queryString + " documents in " + collectionName + " collection");
   cursor.each(function(err, results) {
     assert.equal(err, null);
     if (results != null) {
       console.log(results);
+      returnResult = results
     } else {
-      callback();
+      callback(returnResult);
     }
   });
 };
