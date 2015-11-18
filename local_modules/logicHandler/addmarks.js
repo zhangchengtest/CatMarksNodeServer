@@ -26,7 +26,7 @@ var SqlOperation=new SqlOperation();
 //移除多个数据
 //SqlOperation.removeMany('users',{name:'empvio_replace'});
 //查找所有数据
-SqlOperation.findAll('users',function(results){
-  console.log("================client============");
-  console.log(results);
-});
+// SqlOperation.findAll('users',function(results){
+//   console.log("================client============");
+//   console.log(results);
+// });

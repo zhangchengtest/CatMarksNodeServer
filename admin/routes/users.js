@@ -6,14 +6,13 @@ var SqlOperation = new SqlOperation();
 
 //get userinfo by id;
 router.get('/:id', function(req, res, value) {
-
   SqlOperation.findSpecify('users', {
     _id: SqlOperation.ObjectID(req.params.id)
   }, function(result) {
     res.status(200).send(result);
   });
 });
-//get all userinfo
+//get all users
 router.get('/', function(req, res, value) {
   SqlOperation.findAll('users', function(results) {
     res.status(200).json(results);
