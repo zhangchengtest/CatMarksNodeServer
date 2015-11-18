@@ -19,7 +19,7 @@ var config = {
       status: 400,
       message: "falied!"
     },
-    status400: {
+    status404: {
       code:4004,
       status: 404,
       message: "content is not exists !"
