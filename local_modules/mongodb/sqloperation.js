@@ -99,7 +99,7 @@ var insertDocument = function(db, collectionName, insertString, callback) {
   collection.insertOne(insertString, function(err, resultS) {
     assert.equal(err, null);
     console.log("Inserted a document into the " + collectionName + " collection");
-    console.log(resultS);
+    //console.log(resultS);
     callback(resultS);
   });
 }
@@ -108,7 +108,7 @@ var insertDocuments = function(db, collectionName, insertString, callback) {
     collection.insertMany(insertString, function(err, resultS) {
       assert.equal(err, null);
       console.log("Inserted " + insertString.length + " documents into the " + collectionName + " collection");
-      console.log(resultS);
+      //console.log(resultS);
       callback(resultS);
     });
   }
@@ -120,7 +120,7 @@ var findAll = function(db, collectionName, callback) {
   cursor.each(function(err, result) {
     assert.equal(err, null);
     if (result != null) {
-      console.log(result);
+      //console.log(result);
       returnResult.push(result);
     } else {
       callback(returnResult);
@@ -135,7 +135,7 @@ var findSpecify = function(db, collectionName, queryString, callback) {
   cursor.each(function(err, results) {
     assert.equal(err, null);
     if (results != null) {
-      console.log(results);
+      //console.log(results);
       returnResult = results
     } else {
       callback(returnResult);
@@ -148,7 +148,7 @@ var update = function(db, collectionName, queryString, updateString, callback) {
     queryString,
     updateString,
     function(err, results) {
-      console.log(results);
+      //console.log(results);
       callback(results);
     });
 };
@@ -157,7 +157,7 @@ var updateSpecify = function(db, collectionName, queryString, updateString, call
     queryString,
     updateString,
     function(err, results) {
-      console.log(results);
+      //console.log(results);
       callback(results);
     });
 };
@@ -166,7 +166,7 @@ var updateMany = function(db, collectionName, queryString, updateString, callbac
     queryString,
     updateString,
     function(err, results) {
-      console.log(results);
+      //console.log(results);
       callback(results);
     });
 };
