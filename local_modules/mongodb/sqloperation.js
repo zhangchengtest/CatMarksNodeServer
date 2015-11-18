@@ -120,7 +120,7 @@ var findAll = function(db, collectionName, callback) {
   cursor.each(function(err, result) {
     assert.equal(err, null);
     if (result != null) {
-      console.log(result);
+      //console.log(result);
       returnResult.push(result);
     } else {
       callback(returnResult);
@@ -135,7 +135,7 @@ var findSpecify = function(db, collectionName, queryString, callback) {
   cursor.each(function(err, results) {
     assert.equal(err, null);
     if (results != null) {
-      console.log(results);
+      //console.log(results);
       returnResult = results
     } else {
       callback(returnResult);
