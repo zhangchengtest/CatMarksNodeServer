@@ -148,6 +148,11 @@ router.get('/', function(req, res, value) {
     res.status(200).json(config.usersRes.status1000);
   });
 });
+//访问users/all时抛出错误
+//获得所有用户信息
+router.get('/all', function(req, res, value) {
+  throw new Error("/users/all 被访问了");
+});
 //通过用户ID和token获取用户信息
 router.get('/:id', function(req, res) {
   var userId = SqlOperation.ObjectID(req.params.id);
