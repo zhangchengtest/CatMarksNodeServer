@@ -18,9 +18,9 @@ SqlOperation.prototype.insert = function(collectionName, insertString, callback)
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
-    insert(db, collectionName, insertString, function(results) {
+    insert(db, collectionName, insertString, function(err, results) {
       db.close();
-      callback(results);
+      callback(err, results);
     });
   });
 };
@@ -28,9 +28,9 @@ SqlOperation.prototype.update = function(collectionName, queryString, updateStri
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
-    update(db, collectionName, queryString, updateString, function(results) {
+    update(db, collectionName, queryString, updateString, function(err, results) {
       db.close();
-      callback(results);
+      callback(err, results);
     })
   });
 };
@@ -38,9 +38,9 @@ SqlOperation.prototype.replace = function(collectionName, queryString, replaceSt
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
-    replaceOne(db, collectionName, queryString, replaceString, function(results) {
+    replaceOne(db, collectionName, queryString, replaceString, function(err, results) {
       db.close();
-      callback(results);
+      callback(err, results);
     })
   });
 };
@@ -48,9 +48,9 @@ SqlOperation.prototype.findAll = function(collectionName, callback) {
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
-    findAll(db, collectionName, function(results) {
+    findAll(db, collectionName, function(err, results) {
       db.close();
-      callback(results);
+      callback(err, results);
     })
   });
 };
@@ -58,9 +58,9 @@ SqlOperation.prototype.findSpecify = function(collectionName, queryString, callb
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
-    findSpecify(db, collectionName, queryString, function(results) {
+    findSpecify(db, collectionName, queryString, function(err, results) {
       db.close();
-      callback(results);
+      callback(err, resultS);
     })
   });
 };
@@ -68,9 +68,9 @@ SqlOperation.prototype.removeOne = function(collectionName, queryString, callbac
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
-    removeOne(db, collectionName, queryString, function(results) {
+    removeOne(db, collectionName, queryString, function(err, results) {
       db.close();
-      callback(results);
+      callback(err, resultS);
     })
   });
 };
@@ -78,9 +78,9 @@ SqlOperation.prototype.removeMany = function(collectionName, queryString, callba
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
-    removeMany(db, collectionName, queryString, function(results) {
+    removeMany(db, collectionName, queryString, function(err, results) {
       db.close();
-      callback(results);
+      callback(err, resultS);
     })
   });
 };
@@ -91,7 +91,7 @@ var insert = function(db, collectionName, insertString, callback) {
   collection.insert(insertString, function(err, results) {
     assert.equal(err, null);
     //console.log("Inserted " + insertString.length + " document into the " + collectionName + " collection");
-    callback(results);
+    callback(err, resultS);
   });
 }
 var insertDocument = function(db, collectionName, insertString, callback) {
@@ -100,7 +100,7 @@ var insertDocument = function(db, collectionName, insertString, callback) {
     assert.equal(err, null);
     console.log("Inserted a document into the " + collectionName + " collection");
     //console.log(resultS);
-    callback(resultS);
+    callback(err, resultS);
   });
 }
 var insertDocuments = function(db, collectionName, insertString, callback) {
@@ -109,7 +109,7 @@ var insertDocuments = function(db, collectionName, insertString, callback) {
       assert.equal(err, null);
       console.log("Inserted " + insertString.length + " documents into the " + collectionName + " collection");
       //console.log(resultS);
-      callback(resultS);
+      callback(err, resultS);
     });
   }
   //find
@@ -123,7 +123,7 @@ var findAll = function(db, collectionName, callback) {
       //console.log(result);
       returnResult.push(result);
     } else {
-      callback(returnResult);
+      callback(err, returnResult);
     }
   });
 };
@@ -138,7 +138,7 @@ var findSpecify = function(db, collectionName, queryString, callback) {
       //console.log(results);
       returnResult = results
     } else {
-      callback(returnResult);
+      callback(err, returnResult);
     }
   });
 };
@@ -149,7 +149,7 @@ var update = function(db, collectionName, queryString, updateString, callback) {
     updateString,
     function(err, results) {
       //console.log(results);
-      callback(results);
+      callback(err, results);
     });
 };
 var updateSpecify = function(db, collectionName, queryString, updateString, callback) {
@@ -158,7 +158,7 @@ var updateSpecify = function(db, collectionName, queryString, updateString, call
     updateString,
     function(err, results) {
       //console.log(results);
-      callback(results);
+      callback(err, results);
     });
 };
 var updateMany = function(db, collectionName, queryString, updateString, callback) {
@@ -167,7 +167,7 @@ var updateMany = function(db, collectionName, queryString, updateString, callbac
     updateString,
     function(err, results) {
       //console.log(results);
-      callback(results);
+      callback(err, results);
     });
 };
 var replaceOne = function(db, collectionName, queryString, replaceString, callback) {
@@ -175,7 +175,7 @@ var replaceOne = function(db, collectionName, queryString, replaceString, callba
     queryString,
     replaceString,
     function(err, results) {
-      callback(results);
+      callback(err, results);;
     });
 };
 //delete
@@ -183,13 +183,13 @@ var removeOne = function(db, collectionName, queryString, callback) {
   db.collection(collectionName).deleteOne(
     queryString,
     function(err, results) {
-      callback(results);
+      callback(err, results);
     });
 };
 var removeMany = function(db, collectionName, queryString, callback) {
   db.collection(collectionName).deleteMany(
     queryString,
     function(err, results) {
-      callback(results);
+      callback(err, results);
     });
 };

@@ -3,6 +3,18 @@ var config = {
     uri: "mongodb://localhost",
     port: "27017"
   },
+  serverRes:{
+    status5000:{
+      code: 5000,
+      status: 200,
+      message: "成功!"
+    },
+    status5001:{
+      code: 5001,
+      status: 500,
+      message: "服务器繁忙!"
+    }
+  },
   usersRes: {
     status1000: {
       code: 2000,

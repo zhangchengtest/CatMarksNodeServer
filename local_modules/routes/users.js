@@ -8,6 +8,7 @@ var express = require('express'),
   md5 = require('md5'),
   SqlOperation = require('../mongodb/sqloperation.js'),
   config = require('../config/config.js');
+
 var router = express.Router(),
   SqlOperation = new SqlOperation();
 //==================================================//
@@ -17,12 +18,13 @@ router.use(bodyParser.json()); // to support JSON-encoded bodies
 router.use(bodyParser.urlencoded({ // to support URL-encoded bodies
   extended: true
 }));
+
 //====================================================//
 //====================router statr====================//
 //====================================================//
 
 //用户登录
-router.post('/login', function(req, res) {
+router.post('/login', function(req, res, next) {
   var loginInfo = {
       username: req.body.username,
       password: req.body.password
@@ -38,7 +40,9 @@ router.post('/login', function(req, res) {
   if (check1 && check3 && check4) {
     SqlOperation.findSpecify('users', {
       username: loginInfo.username
-    }, function(results) {
+    }, function(err, results) {
+      //异常处理
+      if (err) return next(err);
       if (results) {
         if (results.password == md5(loginInfo.password)) {
           var userInfo = results;
@@ -49,14 +53,18 @@ router.post('/login', function(req, res) {
             "$set": {
               recently_time: Date.now() / 1000
             }
-          }, function(results) {
+          }, function(err, results) {
+            //异常处理
+            if (err) return next(err);
             console.log("登录时间更新结果");
             console.log(results);
           });
           //移除旧的token并创建新的token
           SqlOperation.removeMany('tokens', {
             user_id: userInfo._id
-          }, function(results) {
+          }, function(err, results) {
+            //异常处理
+            if (err) return next(err);
             console.log("token移除结果");
             console.log(results);
             if (results.result.ok == 1) {
@@ -67,7 +75,9 @@ router.post('/login', function(req, res) {
                 token: token,
                 create_time: Date.now() / 1000,
                 delete_time: Date.now() / 1000 + (86400 * 7)
-              }, function(results) {
+              }, function(err, results) {
+                //异常处理
+                if (err) return next(err);
                 console.log("token添加效果");
                 console.log(results);
                 if (results.result.ok == 1) {
@@ -98,7 +108,7 @@ router.post('/login', function(req, res) {
 });
 
 //用户注册
-router.post('/join', function(req, res) {
+router.post('/join', function(req, res, next) {
   //注册信息
   var joinInfo = {
     username: req.body.username,
@@ -121,13 +131,17 @@ router.post('/join', function(req, res) {
     //检查用户是否存在
     SqlOperation.findSpecify('users', {
       username: req.body.username
-    }, function(results) {
+    }, function(err, results) {
+      //异常处理
+      if (err) return next(err);
       console.log(results);
       if (results) {
         res.status(200).send(config.usersRes.status1005);
       } else {
         //注册用户
-        SqlOperation.insert('users', joinInfo, function(result) {
+        SqlOperation.insert('users', joinInfo, function(err, result) {
+          //异常处理
+          if (err) return next(err);
           console.log(result);
           if (result.result.ok == 1) {
             res.status(200).send(config.usersRes.status1000);
@@ -142,8 +156,10 @@ router.post('/join', function(req, res) {
   }
 });
 //获得所有用户信息
-router.get('/', function(req, res, value) {
-  SqlOperation.findAll('users', function(results) {
+router.get('/', function(req, res, next) {
+  SqlOperation.findAll('users', function(err, results) {
+    //异常处理
+    if (err) return next(err);
     config.usersRes.status1000.data = results;
     res.status(200).json(config.usersRes.status1000);
   });
@@ -151,23 +167,27 @@ router.get('/', function(req, res, value) {
 //访问users/all时抛出错误
 //获得所有用户信息
 router.get('/all', function(req, res, value) {
-  throw new Error("/users/all 被访问了");
+  //console.log(ss);
 });
 //通过用户ID和token获取用户信息
-router.get('/:id', function(req, res) {
+router.get('/:id', function(req, res, next) {
   var userId = SqlOperation.ObjectID(req.params.id);
   var token = req.query.token;
   var nowTime = Date.now() / 1000;
   SqlOperation.findSpecify('tokens', {
     user_id: userId
-  }, function(results) {
+  }, function(err, results) {
+    //异常处理
+    if (err) return next(err);
     if (results) {
       console.log("token返回结果");
       console.log(results);
       if (results.user_id == req.params.id && results.token == token && nowTime <= results.delete_time) {
         SqlOperation.findSpecify('users', {
           _id: userId
-        }, function(results) {
+        }, function(err, results) {
+          //异常处理
+          if (err) return next(err);
           if (results) {
             config.usersRes.status1000.data = results;
             res.status(200).send(config.usersRes.status1000);
@@ -180,7 +200,9 @@ router.get('/:id', function(req, res) {
         //删除token
         SqlOperation.removeOne('tokens', {
           token: token
-        }, function(results) {
+        }, function(err, results) {
+          //异常处理
+          if (err) return next(err);
           if (results.result.ok == 1) {
             res.status(200).send(config.tokenRes.status2006);
           } else {
@@ -197,6 +219,11 @@ router.get('/:id', function(req, res) {
       res.status(200).send(config.tokenRes.status2002);
     }
   });
+});
+//异常处理
+router.use(function (err, req, res, next) {
+ // 带有四个参数的 middleware 专门用来处理异常
+    res.render(500, err.stack);
 });
 //========================================//
 module.exports = router;
