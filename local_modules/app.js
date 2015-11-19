@@ -11,8 +11,11 @@ app.use(function(req, res, next) {
 });
 // 使用 domain 来捕获大部分异常
 app.use(function(req, res, next) {
+
   var reqDomain = domain.create();
   reqDomain.on('error', function(err) {
+    console.log("====进入domain的异常====");
+    console.log(err);
     try {
       var killTimer = setTimeout(function() {
         process.exit(1);

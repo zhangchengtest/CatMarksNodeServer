@@ -60,7 +60,7 @@ SqlOperation.prototype.findSpecify = function(collectionName, queryString, callb
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
     findSpecify(db, collectionName, queryString, function(err, results) {
       db.close();
-      callback(err, resultS);
+      callback(err, results);
     })
   });
 };
@@ -70,7 +70,7 @@ SqlOperation.prototype.removeOne = function(collectionName, queryString, callbac
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
     removeOne(db, collectionName, queryString, function(err, results) {
       db.close();
-      callback(err, resultS);
+      callback(err, results);
     })
   });
 };
@@ -80,7 +80,7 @@ SqlOperation.prototype.removeMany = function(collectionName, queryString, callba
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
     removeMany(db, collectionName, queryString, function(err, results) {
       db.close();
-      callback(err, resultS);
+      callback(err, results);
     })
   });
 };
@@ -91,25 +91,25 @@ var insert = function(db, collectionName, insertString, callback) {
   collection.insert(insertString, function(err, results) {
     assert.equal(err, null);
     //console.log("Inserted " + insertString.length + " document into the " + collectionName + " collection");
-    callback(err, resultS);
+    callback(err, results);
   });
 }
 var insertDocument = function(db, collectionName, insertString, callback) {
   var collection = db.collection(collectionName);
-  collection.insertOne(insertString, function(err, resultS) {
+  collection.insertOne(insertString, function(err, results) {
     assert.equal(err, null);
     console.log("Inserted a document into the " + collectionName + " collection");
-    //console.log(resultS);
-    callback(err, resultS);
+    //console.log(results);
+    callback(err, results);
   });
 }
 var insertDocuments = function(db, collectionName, insertString, callback) {
     var collection = db.collection(collectionName);
-    collection.insertMany(insertString, function(err, resultS) {
+    collection.insertMany(insertString, function(err, results) {
       assert.equal(err, null);
       console.log("Inserted " + insertString.length + " documents into the " + collectionName + " collection");
-      //console.log(resultS);
-      callback(err, resultS);
+      //console.log(results);
+      callback(err, results);
     });
   }
   //find
