@@ -8,3 +8,6 @@ app.use(function(req, res, next) {
 });
 app.use('/users',users);
 app.listen(3000);
+// process.on('uncaughtException', function (err) {
+//     console.log(err);
+// });
