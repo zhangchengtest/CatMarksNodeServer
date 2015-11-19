@@ -18,6 +18,13 @@ router.use(bodyParser.json()); // to support JSON-encoded bodies
 router.use(bodyParser.urlencoded({ // to support URL-encoded bodies
   extended: true
 }));
+//异常处理
+router.use(function(err, req, res, next) {
+  console.log("====异常发生====");
+  console.log(err);
+  // 带有四个参数的 middleware 专门用来处理异常
+  res.render(500, err.stack);
+});
 
 //====================================================//
 //====================router statr====================//
@@ -55,7 +62,7 @@ router.post('/login', function(req, res, next) {
             }
           }, function(err, results) {
             //异常处理
-            if (err) return next(err);
+            //if (err) return next(err);
             console.log("登录时间更新结果");
             console.log(results);
           });
@@ -128,10 +135,14 @@ router.post('/join', function(req, res, next) {
   var check4 = validator.isLength(joinInfo.username, 5, 10);
   var check5 = validator.isLength(req.body.password, 6, 15);
   if (check1 && check3 && check4 && check5) {
+    console.log("格式通过");
     //检查用户是否存在
     SqlOperation.findSpecify('users', {
       username: req.body.username
     }, function(err, results) {
+      console.log("====检查用户是否存在====");
+      console.log(err);
+      console.log(results);
       //异常处理
       if (err) return next(err);
       console.log(results);
@@ -139,11 +150,14 @@ router.post('/join', function(req, res, next) {
         res.status(200).send(config.usersRes.status1005);
       } else {
         //注册用户
-        SqlOperation.insert('users', joinInfo, function(err, result) {
+        SqlOperation.insert('users', joinInfo, function(err, results) {
+          console.log("====注册用户====");
+          console.log(err);
+          console.log(results);
           //异常处理
           if (err) return next(err);
-          console.log(result);
-          if (result.result.ok == 1) {
+          console.log(results);
+          if (results.result.ok == 1) {
             res.status(200).send(config.usersRes.status1000);
           }
         });
@@ -220,10 +234,6 @@ router.get('/:id', function(req, res, next) {
     }
   });
 });
-//异常处理
-router.use(function (err, req, res, next) {
- // 带有四个参数的 middleware 专门用来处理异常
-    res.render(500, err.stack);
-});
+
 //========================================//
 module.exports = router;
