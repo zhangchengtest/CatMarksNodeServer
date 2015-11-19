@@ -46,6 +46,11 @@ SqlOperation.prototype.replace = function(collectionName, queryString, replaceSt
 };
 SqlOperation.prototype.findAll = function(collectionName, callback) {
   MongoClient.connect(url, function(err, db) {
+    console.log("进去findall方法");
+    if(err){
+      console.log("进去findall方法捕获的err");
+      
+    }
     assert.equal(null, err);
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
     findAll(db, collectionName, function(err, results) {
@@ -131,7 +136,7 @@ var findSpecify = function(db, collectionName, queryString, callback) {
   var returnResult;
   //var objectId = new mongo.ObjectID(queryString._id);
   var cursor = db.collection(collectionName).find(queryString);
-  console.log("find " + queryString + " documents in " + collectionName + " collection");
+  console.log("find a  documents in " + collectionName + " collection");
   cursor.each(function(err, results) {
     assert.equal(err, null);
     if (results != null) {

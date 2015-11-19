@@ -18,13 +18,7 @@ router.use(bodyParser.json()); // to support JSON-encoded bodies
 router.use(bodyParser.urlencoded({ // to support URL-encoded bodies
   extended: true
 }));
-//异常处理
-router.use(function(err, req, res, next) {
-  console.log("====异常发生====");
-  console.log(err);
-  // 带有四个参数的 middleware 专门用来处理异常
-  res.render(500, err.stack);
-});
+
 
 //====================================================//
 //====================router statr====================//
@@ -172,6 +166,9 @@ router.post('/join', function(req, res, next) {
 //获得所有用户信息
 router.get('/', function(req, res, next) {
   SqlOperation.findAll('users', function(err, results) {
+    console.log("====获取所有用户信息====");
+    console.log(err);
+    console.log(results);
     //异常处理
     if (err) return next(err);
     config.usersRes.status1000.data = results;
