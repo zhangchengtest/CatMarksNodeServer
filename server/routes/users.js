@@ -7,7 +7,8 @@ var express = require('express'),
   validator = require('validator'),
   md5 = require('md5'),
   SqlOperation = require('../mongodb/sqloperation.js'),
-  config = require('../config/config.js');
+  config = require('../config/config.js')
+sendEmail = require('../config/email.js');
 
 var router = express.Router(),
   SqlOperation = new SqlOperation();
@@ -27,12 +28,13 @@ router.use(bodyParser.urlencoded({ // to support URL-encoded bodies
 //用户登录
 router.post('/login', function(req, res, next) {
   var loginInfo = {
-      username: req.body.username,
-      password: req.body.password
-    }
-    //登录信息格式校验
-    //用户名不能为空，5-10个数字或英文字符
-    //密码不能为空，6-15个数字或英文字符
+    username: req.body.username,
+    password: req.body.password
+  }
+
+  //登录信息格式校验
+  //用户名不能为空，5-10个数字或英文字符
+  //密码不能为空，6-15个数字或英文字符
   var check1 = validator.isAlphanumeric(loginInfo.username);
   //var check2 = validator.isAlphanumeric(loginInfo.password);
   var check3 = validator.isLength(loginInfo.username, 5, 10);
@@ -44,6 +46,7 @@ router.post('/login', function(req, res, next) {
     }, function(err, results) {
       //异常处理
       if (err) return next(err);
+
       if (results) {
         if (results.password == md5(loginInfo.password)) {
           var userInfo = results;
@@ -56,7 +59,8 @@ router.post('/login', function(req, res, next) {
             }
           }, function(err, results) {
             //异常处理
-            //if (err) return next(err);
+            if (err) return next(err);
+
             console.log("登录时间更新结果");
             console.log(results);
           });
@@ -66,6 +70,7 @@ router.post('/login', function(req, res, next) {
           }, function(err, results) {
             //异常处理
             if (err) return next(err);
+
             console.log("token移除结果");
             console.log(results);
             if (results.result.ok == 1) {
@@ -79,6 +84,7 @@ router.post('/login', function(req, res, next) {
               }, function(err, results) {
                 //异常处理
                 if (err) return next(err);
+
                 console.log("token添加效果");
                 console.log(results);
                 if (results.result.ok == 1) {
@@ -135,10 +141,9 @@ router.post('/join', function(req, res, next) {
       username: req.body.username
     }, function(err, results) {
       console.log("====检查用户是否存在====");
-      console.log(err);
-      console.log(results);
       //异常处理
       if (err) return next(err);
+
       console.log(results);
       if (results) {
         res.status(200).send(config.usersRes.status1005);
@@ -146,12 +151,23 @@ router.post('/join', function(req, res, next) {
         //注册用户
         SqlOperation.insert('users', joinInfo, function(err, results) {
           console.log("====注册用户====");
-          console.log(err);
-          console.log(results);
           //异常处理
           if (err) return next(err);
+
           console.log(results);
           if (results.result.ok == 1) {
+            //注册成功
+            //向注册用户发送邮件
+            // var mailOptions = {
+            //   from: '####@###.###',
+            //   to: joinInfo.email,
+            //   subject: 'Hello ' + joinInfo.username,
+            //   text: 'Welcome to join our NetMarks !',
+            //   html: '<b>Thank you !</b>'
+            // };
+            // sendEmail(mailOptions, function(results) {
+            //   console.log(results);
+            // })
             res.status(200).send(config.usersRes.status1000);
           }
         });
@@ -167,19 +183,19 @@ router.post('/join', function(req, res, next) {
 router.get('/', function(req, res, next) {
   SqlOperation.findAll('users', function(err, results) {
     console.log("====获取所有用户信息====");
-    console.log(err);
-    console.log(results);
     //异常处理
     if (err) return next(err);
+
     config.usersRes.status1000.data = results;
     res.status(200).json(config.usersRes.status1000);
   });
 });
-//访问users/all时抛出错误
+
 //获得所有用户信息
-router.get('/all', function(req, res, value) {
+router.get('/all', function(req, res, value, next) {
   //console.log(ss);
 });
+
 //通过用户ID和token获取用户信息
 router.get('/:id', function(req, res, next) {
   var userId = SqlOperation.ObjectID(req.params.id);
@@ -190,6 +206,7 @@ router.get('/:id', function(req, res, next) {
   }, function(err, results) {
     //异常处理
     if (err) return next(err);
+
     if (results) {
       console.log("token返回结果");
       console.log(results);
@@ -199,6 +216,7 @@ router.get('/:id', function(req, res, next) {
         }, function(err, results) {
           //异常处理
           if (err) return next(err);
+
           if (results) {
             config.usersRes.status1000.data = results;
             res.status(200).send(config.usersRes.status1000);
@@ -214,6 +232,7 @@ router.get('/:id', function(req, res, next) {
         }, function(err, results) {
           //异常处理
           if (err) return next(err);
+
           if (results.result.ok == 1) {
             res.status(200).send(config.tokenRes.status2006);
           } else {
@@ -232,5 +251,4 @@ router.get('/:id', function(req, res, next) {
   });
 });
 
-//========================================//
 module.exports = router;

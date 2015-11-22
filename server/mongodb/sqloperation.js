@@ -16,6 +16,9 @@ SqlOperation.prototype.ObjectID = function(id) {
 }
 SqlOperation.prototype.insert = function(collectionName, insertString, callback) {
   MongoClient.connect(url, function(err, db) {
+    if (err) {
+      callback(err, null);
+    }
     assert.equal(null, err);
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
     insert(db, collectionName, insertString, function(err, results) {
@@ -26,6 +29,9 @@ SqlOperation.prototype.insert = function(collectionName, insertString, callback)
 };
 SqlOperation.prototype.update = function(collectionName, queryString, updateString, callback) {
   MongoClient.connect(url, function(err, db) {
+    if (err) {
+      callback(err, null);
+    }
     assert.equal(null, err);
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
     update(db, collectionName, queryString, updateString, function(err, results) {
@@ -36,6 +42,9 @@ SqlOperation.prototype.update = function(collectionName, queryString, updateStri
 };
 SqlOperation.prototype.replace = function(collectionName, queryString, replaceString, callback) {
   MongoClient.connect(url, function(err, db) {
+    if (err) {
+      callback(err, null);
+    }
     assert.equal(null, err);
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
     replaceOne(db, collectionName, queryString, replaceString, function(err, results) {
@@ -46,10 +55,8 @@ SqlOperation.prototype.replace = function(collectionName, queryString, replaceSt
 };
 SqlOperation.prototype.findAll = function(collectionName, callback) {
   MongoClient.connect(url, function(err, db) {
-    console.log("进去findall方法");
-    if(err){
-      console.log("进去findall方法捕获的err");
-      
+    if (err) {
+      callback(err, null);
     }
     assert.equal(null, err);
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
@@ -61,6 +68,9 @@ SqlOperation.prototype.findAll = function(collectionName, callback) {
 };
 SqlOperation.prototype.findSpecify = function(collectionName, queryString, callback) {
   MongoClient.connect(url, function(err, db) {
+    if (err) {
+      callback(err, null);
+    }
     assert.equal(null, err);
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
     findSpecify(db, collectionName, queryString, function(err, results) {
@@ -71,6 +81,9 @@ SqlOperation.prototype.findSpecify = function(collectionName, queryString, callb
 };
 SqlOperation.prototype.removeOne = function(collectionName, queryString, callback) {
   MongoClient.connect(url, function(err, db) {
+    if (err) {
+      callback(err, null);
+    }
     assert.equal(null, err);
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
     removeOne(db, collectionName, queryString, function(err, results) {
@@ -81,6 +94,9 @@ SqlOperation.prototype.removeOne = function(collectionName, queryString, callbac
 };
 SqlOperation.prototype.removeMany = function(collectionName, queryString, callback) {
   MongoClient.connect(url, function(err, db) {
+    if (err) {
+      callback(err, null);
+    }
     assert.equal(null, err);
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
     removeMany(db, collectionName, queryString, function(err, results) {
@@ -123,6 +139,7 @@ var findAll = function(db, collectionName, callback) {
   var cursor = db.collection(collectionName).find();
   console.log("find all documents in " + collectionName + " collection");
   cursor.each(function(err, result) {
+
     assert.equal(err, null);
     if (result != null) {
       //console.log(result);
