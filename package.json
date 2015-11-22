@@ -60,6 +60,8 @@
   "dependencies": {
     "body-parser": "^1.14.1",
     "md5": "^2.0.0",
+    "moment": "^2.10.6",
+    "nodemailer": "^1.10.0",
     "uuid": "^2.0.1",
     "validator": "^4.2.1"
   }
