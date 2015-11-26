@@ -17,7 +17,7 @@ var config = {
   },
   usersRes: {
     status1000: {
-      code: 2000,
+      code: 1000,
       status: 200,
       message: "成功!"
     },
@@ -120,6 +120,40 @@ var config = {
       code: 2006,
       status: 200,
       message: "token移除成功!"
+    }
+  },
+  markRes:{
+    status3000:{
+      code:3000,
+      status:200,
+      message:"成功!"
+    },
+    status3001:{
+      code:3001,
+      status:200,
+      message:"提交的内容格式不正确!"
+    },
+    status3002:{
+      code:3002,
+      status:200,
+      message:"书签已存在!"
+    }
+  },
+  folderRes:{
+    status4000:{
+      code:4000,
+      status:200,
+      message:"成功!"
+    },
+    status4001:{
+      code:4001,
+      status:200,
+      message:"提交的内容格式不正确!"
+    },
+    status4002:{
+      code:4002,
+      status:200,
+      message:"文件夹已存在!"
     }
   }
 }

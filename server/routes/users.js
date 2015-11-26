@@ -12,7 +12,7 @@ sendEmail = require('../config/email.js');
 
 var router = express.Router(),
   SqlOperation = new SqlOperation();
-//==================================================//
+//==================================================//Z
 //====================middleware====================//
 //==================================================//
 router.use(bodyParser.json()); // to support JSON-encoded bodies
@@ -118,7 +118,7 @@ router.post('/login', function(req, res, next) {
 router.post('/join', function(req, res, next) {
   //注册信息
   var joinInfo = {
-    username: req.body.username,
+    username: validator.escape(req.body.username),
     email: req.body.email,
     password: md5(req.body.password),
     register_time: Date.now() / 1000,
@@ -169,6 +169,8 @@ router.post('/join', function(req, res, next) {
             //   console.log(results);
             // })
             res.status(200).send(config.usersRes.status1000);
+          } else {
+            res.status(200).send(config.serverRes.status5001);
           }
         });
       }
