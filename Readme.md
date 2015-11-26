@@ -32,7 +32,7 @@
 | id | ObjectId | 编号 |
 | title | string | 标题 |
 | uri | string | 链接 |
-| decribe | string | 描述 |
+| describe | string | 描述 |
 | content | string | 内容 |
 | tags | array | 标签 |
 | sort | int | 排序 |

@@ -79,6 +79,19 @@ SqlOperation.prototype.findSpecify = function(collectionName, queryString, callb
     })
   });
 };
+SqlOperation.prototype.findMany = function(collectionName, queryString, callback) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      callback(err, null);
+    }
+    assert.equal(null, err);
+    console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
+    findMany(db, collectionName, queryString, function(err, results) {
+      db.close();
+      callback(err, results);
+    })
+  });
+};
 SqlOperation.prototype.removeOne = function(collectionName, queryString, callback) {
   MongoClient.connect(url, function(err, db) {
     if (err) {
@@ -149,6 +162,22 @@ var findAll = function(db, collectionName, callback) {
     }
   });
 };
+var findMany = function(db, collectionName, queryString, callback) {
+  var returnResult = [];
+  //var objectId = new mongo.ObjectID(queryString._id);
+  var cursor = db.collection(collectionName).find(queryString);
+  console.log("find some documents in " + collectionName + " collection");
+  cursor.each(function(err, result) {
+
+    assert.equal(err, null);
+    if (result != null) {
+      //console.log(result);
+      returnResult.push(result);
+    } else {
+      callback(err, returnResult);
+    }
+  });
+};
 var findSpecify = function(db, collectionName, queryString, callback) {
   var returnResult;
   //var objectId = new mongo.ObjectID(queryString._id);
@@ -166,6 +195,8 @@ var findSpecify = function(db, collectionName, queryString, callback) {
 };
 //update
 var update = function(db, collectionName, queryString, updateString, callback) {
+  console.log(queryString);
+  console.log(updateString);
   db.collection(collectionName).update(
     queryString,
     updateString,
