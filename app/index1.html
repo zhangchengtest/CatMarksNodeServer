@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.css">
+  <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <span id="view_all" class="btn btn-success">访问users/all接口</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <h2>注册</h2>
+        <form>
+          <input type="text" class="form-control" name="username">
+          <input type="email" class="form-control" name="email">
+          <input type="password" class="form-control" name="password">
+          <div class="btn btn-success pull-right" id="sign_in">注册</div>
+        </form>
+      </div>
+      <div class="col-md-6">
+        <h2>登录</h2>
+        <form>
+          <input type="text" class="form-control" name="username">
+          <input type="password" class="form-control" name="password">
+          <div class="btn btn-success pull-right" id="login_in">登录</div>
+        </form>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <h2>添加文件夹</h2>
+        <form>
+          <input type="text" name="title" placeholder="title" class="form-control">
+          <textarea name="describe" rows="8" cols="40" class="form-control"></textarea>
+          <select class="form-control folders" name="folder_id" id="folder_select">
+            <option value="0">none</option>
+          </select>
+          <div class="btn btn-success pull-right" id="add_folder">添加文件夹</div>
+        </form>
+      </div>
+      <div class="col-md-6">
+        <h2>查看文件夹</h2>
+
+        <form>
+          编号：
+          <input type="text" id="folder_id" name="_id" class="form-control"> 标题：
+          <input type="text" name="title" id="folder_title" class="form-control"> 描述：
+          <textarea name="describe" rows="8" cols="40" id="folder_describe" class="form-control"></textarea>
+          排序：
+          <input type="number" name="sort" id="folder_sort" class="form-control"> 状态:
+          <input type="radio" name="status" value="1" id="folder_status_1">可用
+          <input type="radio" name="status" value="0" id="folder_status_0">不可用
+          <br> 所属文件夹
+          <select class="form-control folders" name="folder_id" id="folders_father">
+            <option value="0">无</option>
+          </select>
+          <div class="btn btn-success pull-right" id="update_folder">更新文件夹</div>
+        </form>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <h2>添加书签</h2>
+        <form>
+          标题：
+          <input type="text" name="title" class="form-control"> 链接
+          <input type="text" name="uri" class="form-control"> 描述
+          <textarea name="describe" rows="8" cols="40" class="form-control"></textarea>
+          内容
+          <textarea name="content" rows="8" cols="40" class="form-control"></textarea>
+          标记
+          <input type="text" name="tag" class="form-control"> 排序
+          <input type="number" name="sort" class="form-control"> 所属文件夹
+          <select class="form-control folders" name="folder_id" id="mark_select">
+            <option value="0">none</option>
+          </select>
+          <div class="btn btn-success pull-right" id="add_mark">添加书签</div>
+        </form>
+      </div>
+      <div class="col-md-6">
+        <h2>查看文件夹</h2>
+
+        <form>
+          标题：
+          <input type="text" name="title" class="form-control"> 链接
+          <input type="text" name="uri" class="form-control"> 描述
+          <textarea name="describe" rows="8" cols="40" class="form-control"></textarea>
+          内容
+          <textarea name="content" rows="8" cols="40" class="form-control"></textarea>
+          标记
+          <input type="text" name="tag" class="form-control"> 排序
+          <input type="number" name="sort" class="form-control"> 所属文件夹
+          <select class="form-control folders" name="folder_id" id="mark_select">
+            <option value="0">none</option>
+          </select>
+          <div class="btn btn-success pull-right" id="add_mark">添加书签</div>
+        </form>
+      </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <h2>所有用户信息</h2>
+        <ul id="user_list"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // $.ajax({
+    //   type: "get",
+    //   url: "http://localhost:3000/users",
+    //   error: function(request) {
+    //     console.error("所有用户信息获取错误!");
+    //     console.log(request);
+    //   },
+    //   success: function(data) {
+    //     console.log(data);
+    //     var htmlSec = "";
+    //     $.each(data.data, function(key, value) {
+    //       htmlSec += '<li>id:' + value._id + '<br>用户名：' + value.username + '<br>邮箱：' + value.email + '<br>密码：' + value.password + '<br>权限：' + value.role + '<br>状态：' + value.status + '<br>等级：' + value.level + '<br>注册时间：' + value.register_time +
+    //         '<br>最近登录：' + value.recently_time + '</li>'
+    //     })
+    //     $('#user_list').html(htmlSec);
+    //     //alert(data.message)
+    //   }
+    // });
+
+    $.ajax({
+      type: "get",
+      url: "http://localhost:3000/folders",
+      data: {
+        user_id: $.cookie('user_id'),
+        token: $.cookie('token')
+      },
+      error: function(request) {
+        console.error("文件夹信息信息获取错误!");
+        console.log(request);
+      },
+      success: function(data) {
+        console.log("文件夹列表");
+        console.log(data);
+        var htmlSec = "";
+        $.each(data.data, function(key, value) {
+            htmlSec += '<option value="' + value._id + '">' + value.title + '</option>'
+          })
+          //$('#folders').html(htmlSec);
+        $(htmlSec).appendTo($('.folders'));
+        //alert(data.message)
+      }
+    })
+    $("#sign_in").click(function() {
+      $.ajax({
+        type: "POST",
+        url: "http://localhost:3000/users/join",
+        data: $(this).parent().serialize(),
+        error: function(request) {
+          console.error("注册错误!");
+          console.log(request);
+        },
+        success: function(data) {
+          console.log(data);
+          alert(data.message)
+        }
+      })
+    });
+    $("#login_in").click(function() {
+      $.ajax({
+        type: "POST",
+        url: "http://localhost:3000/users/login",
+        data: $(this).parent().serialize(),
+        error: function(request) {
+          console.error("登录错误!");
+          console.log(request);
+        },
+        success: function(data) {
+          console.log(data);
+          if (data.code == 1000) {
+            $.cookie('token', data.token);
+            $.cookie('user_id', data.data._id);
+          }
+          alert(data.message)
+        }
+      })
+    });
+    $('#view_all').click(function() {
+      $.ajax({
+        type: "get",
+        url: "http://localhost:3000/users/all",
+        //data: $(this).parent().serialize(),
+        error: function(request) {
+          console.error("错误!");
+          console.log(request);
+        },
+        success: function(data) {
+          console.log(data);
+
+        }
+      })
+    });
+    $("#add_folder").click(function() {
+      $.ajax({
+        type: "POST",
+        url: "http://localhost:3000/folders",
+        data: $.param({
+          'token': $.cookie('token'),
+          'user_id': $.cookie('user_id')
+        }) + '&' + $(this).parent().serialize(),
+        error: function(request) {
+          console.error("文件夹添加错误!");
+          console.log(request);
+        },
+        success: function(data) {
+          console.log(data);
+          alert(data.message)
+        }
+      })
+    });
+    $("#update_folder").click(function() {
+      var id = $('#folder_id').val();
+      $.ajax({
+        type: "PUT",
+        url: "http://localhost:3000/folders/" + id,
+        data: $.param({
+          'token': $.cookie('token'),
+          'user_id': $.cookie('user_id')
+        }) + '&' + $(this).parent().serialize(),
+        error: function(request) {
+          console.error("文件夹编辑错误!");
+          console.log(request);
+        },
+        success: function(data) {
+          console.log(data);
+          alert(data.message)
+        }
+      })
+    });
+    $('#folder_select').change(function() {
+      var id = $(this).val();
+      $.ajax({
+        type: "get",
+        url: "http://localhost:3000/folders/" + id,
+        data: {
+          user_id: $.cookie('user_id'),
+          token: $.cookie('token')
+        },
+        error: function(request) {
+          console.error("文件夹信息信息获取错误!");
+          console.log(request);
+        },
+        success: function(data) {
+          console.log("文件夹详情");
+          console.log(data);
+          $('#folder_id').val(data.data._id);
+
+          $('#folder_title').val(data.data.title);
+          $('#folder_describe').val(data.data.describe);
+          $('#folder_sort').val(data.data.sort);
+          if (data.data.status == 1) {
+            $('#folder_status_1').attr('checked', "checked")
+          } else {
+            $('#folder_status_0').attr('checked', "checked")
+          }
+          $('#folders_father').val(data.data.folder_id);
+        }
+      })
+    });
+    $("#add_mark").click(function() {
+      $.ajax({
+        type: "POST",
+        url: "http://localhost:3000/marks",
+        data: $.param({
+          'token': $.cookie('token'),
+          'user_id': $.cookie('user_id')
+        }) + '&' + $(this).parent().serialize(),
+        error: function(request) {
+          console.error("书签添加错误!");
+          console.log(request);
+        },
+        success: function(data) {
+          console.log(data);
+          alert(data.message)
+        }
+      })
+    });
+  </script>
+</body>
+
+</html>
