@@ -27,7 +27,7 @@ router.post('/', function(req, res, next) {
   var check1 = validator.isMongoId(folderInfo.user_id),
     check2 = validator.isUUID(req.body.token, 4);
   //判断token是否有效并且属于该用户
-  if (check1 && check2) {
+  if (check1 && check2 && req.body.title != "") {
     SqlOperation.findSpecify('tokens', {
       user_id: folderInfo.user_id
     }, function(err, results) {
@@ -207,6 +207,52 @@ router.put('/:id', function(req, res, next) {
     res.status(200).send(config.folderRes.status4001);
     console.log("文件夹校验结果");
     console.log(check1 + " " + check2);
+  }
+});
+//获取文件夹下所有书签
+router.get('/marks/:id', function(req, res, next) {
+  var user_id = SqlOperation.ObjectID(req.query.user_id);
+  var folder_id = SqlOperation.ObjectID(req.params.id);
+
+  //格式校验
+  var check1 = validator.isMongoId(req.query.user_id),
+    check2 = validator.isMongoId(req.params.id),
+    check3 = validator.isUUID(req.query.token, 4);
+  if (check1 && check2 && check3) {
+    SqlOperation.findSpecify('tokens', {
+      user_id: user_id
+    }, function(err, results) {
+      if (err) return next(err);
+      if (results) {
+
+        if (results.token == req.query.token && Date.now() / 1000 <= results.delete_time) {
+          SqlOperation.findMany('marks', {
+            user_id: user_id,
+            folder_id: folder_id
+          }, function(err, results) {
+            if (err) return next(err);
+            if (results) {
+              config.markRes.status3000.data = results;
+              res.status(200).send(config.markRes.status3000);
+              config.markRes.status3000.data = null;
+            } else {
+              config.markRes.status3000.data = "";
+              res.status(200).send(config.markRes.status3000);
+            }
+          })
+        } else {
+          //token已失效
+          res.status(200).send(config.tokenRes.status2003);
+        }
+      } else {
+        //token不存在
+        res.status(200).send(config.tokenRes.status2002);
+      }
+    });
+  } else {
+    res.status(200).send(config.markRes.status3001);
+    console.log("书签校验结果");
+    console.log(check1 + " " + check2 + " " + check3);
   }
 });
 module.exports = router;

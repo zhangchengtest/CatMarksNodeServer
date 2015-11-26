@@ -179,6 +179,7 @@ var findMany = function(db, collectionName, queryString, callback) {
   });
 };
 var findSpecify = function(db, collectionName, queryString, callback) {
+
   var returnResult;
   //var objectId = new mongo.ObjectID(queryString._id);
   var cursor = db.collection(collectionName).find(queryString);
@@ -186,7 +187,6 @@ var findSpecify = function(db, collectionName, queryString, callback) {
   cursor.each(function(err, results) {
     assert.equal(err, null);
     if (results != null) {
-      //console.log(results);
       returnResult = results
     } else {
       callback(err, returnResult);
