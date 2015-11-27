@@ -1,8 +1,8 @@
 var express = require('express'),
   bodyParser = require('body-parser'),
   validator = require('validator'),
-  SqlOperation = require('../mongodb/sqloperation.js'),
-  config = require('../config/config.js');
+  SqlOperation = require('../tools/sqloperation.js'),
+  config = require('../tools/config.js');
 
 var router = express.Router(),
   SqlOperation = new SqlOperation();
@@ -26,6 +26,7 @@ router.post('/', function(req, res, next) {
     "status": 1,
     "date": Date.now() / 1000
   };
+  console.log(SqlOperation.ObjectID(req.body.folder_id));
   //检查提交的格式
   var check1 = validator.isMongoId(markInfo.user_id),
     check2 = validator.isUUID(req.body.token, 4);

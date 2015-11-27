@@ -1,8 +1,8 @@
 var express = require('express'),
   bodyParser = require('body-parser'),
   validator = require('validator'),
-  SqlOperation = require('../mongodb/sqloperation.js'),
-  config = require('../config/config.js');
+  SqlOperation = require('../tools/sqloperation.js'),
+  config = require('../tools/config.js');
 
 var router = express.Router(),
   SqlOperation = new SqlOperation();

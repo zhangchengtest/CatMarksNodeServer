@@ -2,8 +2,8 @@ var express = require('express'),
   users = require('./routes/users.js'),
   marks = require('./routes/marks.js'),
   folders = require('./routes/folders.js'),
-  config = require('./config/config.js'),
-  writeLog = require('./config/log.js');
+  config = require('./tools/config.js'),
+  writeLog = require('./tools/log.js');
 var app = express();
 
 app.use(function(req, res, next) {

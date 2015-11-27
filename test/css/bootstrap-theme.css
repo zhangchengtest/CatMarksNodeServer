@@ -1,0 +1,46 @@
+body {
+  font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", "STHeitiSC-Light", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+}
+.dropdown-menu {
+  border-radius: 0;
+}
+.col-md-2, .col-md-3, .col-md-7, .row, .container-fluid {
+  padding: 0;
+  margin: 0;
+}
+.nav-pills>li>a {
+  border-radius: 0;
+  color: #ECF0F1;
+}
+.nav-pills>li>a:hover,.nav-pills>li>a:focus {
+  color: #1ABC9C;
+}
+.nav-tabs>li>a {
+  border-radius: 0;
+  border: 0;
+}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+  background-color: #16A085;
+  color: #ECF0F1;
+  border-radius: 0;
+  border: 0;
+}
+.navbar {
+  margin: 0;
+}
+.form-control {
+  border-radius: 0;
+  border: none;
+  border-bottom: 1px solid #95A5A6;
+  background: none;
+  box-shadow: none;
+}
+.form-control:focus{
+  box-shadow: none;
+}
+.btn {
+  border-radius: 0;
+}
+a {
+  color: #16A085;
+}

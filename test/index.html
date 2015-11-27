@@ -1,29 +1,116 @@
 <!doctype html>
-<html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="" ng-app="netMarks">
+<!--<![endif]-->
+
 <head>
   <meta charset="utf-8">
-  <title>Mocha Spec Runner</title>
-  <link rel="stylesheet" href="../bower_components/mocha/mocha.css">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/bootstrap-theme.css">
+  <link rel="stylesheet" href="css/main.css">
+  <!-- <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script> -->
 </head>
-<body>
-  <div id="mocha"></div>
-  <script src="../bower_components/mocha/mocha.js"></script>
-  <script>mocha.setup('bdd');</script>
-  <script src="../bower_components/chai/chai.js"></script>
-  <script>
-    var assert = chai.assert;
-    var expect = chai.expect;
-    var should = chai.should();
-  </script>
-  <!-- bower:js -->
-  <!-- endbower -->
-  <!-- include source files here... -->
-  <!-- include spec files here... -->
-  <script src="spec/test.js"></script>
-  <script>
-    if (navigator.userAgent.indexOf('PhantomJS') === -1) {
-      mocha.run();
-    }
-  </script>
+
+<body ng-controller="netMarksIndex">
+  <!--  [if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+  <div class="container-fluid full-height">
+    <div class="row full-height">
+      <div class="col-md-2 folders full-height">
+        <ul class="nav nav-pills nav-stacked ">
+          <li ng-repeat="folder in folders">
+            <a href="#">
+              <span ng-bind="folder.title"></span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-3 marks full-height">
+        <ul class="nav nav-pills nav-stacked ">
+          <li ng-repeat="mark in marks">
+            <a href="#">
+              <span ng-bind="mark.title"></span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-7 operates full-height">
+        <ul class="nav nav-tabs">
+          <li id="marks_add"><a href="#marks_pane" data-toggle="tab">添加书签</a></li>
+          <li id="folders_add"><a href="#folders_pane" data-toggle="tab">添加文件夹</a></li>
+          <li class="pull-right"><a href="#">Fork me on GitHub!</a></li>
+          <li class="pull-right active" id="login_btn"><a data-toggle="tab" href="#login_pane">登录</a></li>
+          <li class="pull-right" id="join_btn"><a data-toggle="tab" href="#join_pane">注册</a></li>
+          <li class="pull-right" id="out_btn"><a data-toggle="tab" href="#leave_pane">退出登录</a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="login_pane">
+            <form id="login_form" class="operate-form">
+              <h2 class="form-title">登 录</h2>
+              <input type="text" class="form-control" name="username" placeholder="邮箱 / 用户名" required="" autofocus="">
+              <input type="password" class="form-control" name="password" placeholder="密码" required="">
+              <button class="btn btn-lg btn-primary btn-block" type="submit">登 录</button>
+            </form>
+          </div>
+          <div class="tab-pane " id="marks_pane">
+
+
+            <form id="mark_add_form" class="operate-form">
+              <h2 lass="form-title">添加书签</h2>
+
+              <input type="text" name="title" class="form-control" placeholder="标题">
+              <input type="text" name="uri" class="form-control" placeholder="链接">
+              <textarea name="describe" rows="5" class="form-control" placeholder="描述"></textarea>
+
+              <textarea name="content" rows="5" class="form-control" placeholder="内容"></textarea>
+
+              <input type="text" name="tags" class="form-control" placeholder="标记">
+              <input type="number" name="sort" class="form-control" placeholder="排序">
+              <select class="form-control" name="folder_id">
+                <option ng-repeat="folder in folders" ng-value="folder._id">{{folder.title}}</option>
+              </select>
+
+              <button class="btn btn-lg btn-primary btn-block" type="submit">添 加</button>
+            </form>
+          </div>
+          <div class="tab-pane" id="folders_pane">
+
+            <form id="folder_add_form" class="operate-form">
+              <h2 class="form-title">添加文件夹</h2>
+
+              <input type="text" name="title" placeholder="标题" class="form-control">
+              <textarea name="describe" placeholder="描述" rows="5" class="form-control"></textarea>
+              <select class="form-control" name="folder_id" id="folder_select">
+                <option value="0" selected="selected">无父级</option>
+                <option ng-repeat="folder in folders" ng-value="folder._id">{{folder.title}}</option>
+              </select>
+
+              <button class="btn btn-lg btn-primary btn-block" type="submit">添 加</button>
+
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="js/vendor/jquery-1.11.2.min.js"></script>
+  <script src="js/vendor/jquery.cookie.min.js"></script>
+  <script src="js/vendor/jquery.validate.min.js"></script>
+  <script src="js/vendor/angular.min.js"></script>
+  <script src="js/vendor/bootstrap.min.js"></script>
+  <script src="js/global.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/controller.js"></script>
 </body>
+
 </html>
