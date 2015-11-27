@@ -1,4 +1,4 @@
-var SqlOperation=require('../mongodb/sqloperation.js');
+var SqlOperation=require('../tools/sqloperation.js');
 var SqlOperation=new SqlOperation();
 //新增数据
 // SqlOperation.insert('users',[{name:"hehehhe"},{name:"hahahaha"}],function(result){

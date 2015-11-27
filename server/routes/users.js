@@ -6,9 +6,9 @@ var express = require('express'),
   uuid = require('uuid'),
   validator = require('validator'),
   md5 = require('md5'),
-  SqlOperation = require('../mongodb/sqloperation.js'),
-  config = require('../config/config.js')
-sendEmail = require('../config/email.js');
+  SqlOperation = require('../tools/sqloperation.js'),
+  config = require('../tools/config.js')
+sendEmail = require('../tools/email.js');
 
 var router = express.Router(),
   SqlOperation = new SqlOperation();
@@ -70,9 +70,6 @@ router.post('/login', function(req, res, next) {
           }, function(err, results) {
             //异常处理
             if (err) return next(err);
-
-            console.log("token移除结果");
-            console.log(results);
             if (results.result.ok == 1) {
               //为登陆成功的用户创建新的token
               var token = uuid.v4();
@@ -85,8 +82,7 @@ router.post('/login', function(req, res, next) {
                 //异常处理
                 if (err) return next(err);
 
-                console.log("token添加效果");
-                console.log(results);
+
                 if (results.result.ok == 1) {
                   config.usersRes.status1000.data = userInfo;
                   config.usersRes.status1000.token = token;

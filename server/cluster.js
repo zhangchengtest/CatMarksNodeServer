@@ -1,6 +1,7 @@
 var cluster = require('cluster'),
   numCPUs = require('os').cpus().length,
-  writeLog = require('./config/log.js');
+  writeLog = require('./tools/log.js'),
+  sendEmail = require('./tools/email.js');
 
 if (cluster.isMaster) {
 
