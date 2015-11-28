@@ -1,5 +1,14 @@
 var netMarks = angular.module('netMarks', []);
 netMarks.controller('netMarksIndex', function($http, $scope) {
+  //退出登录
+  $('#out_btn').click(function() {
+    if (confirm("确定离开？")) {
+      $.removeCookie('user_id');
+      $.removeCookie('token');
+      $scope.folders = null;
+      $scope.marks = null;
+    }
+  });
 
   if ($.cookie('user_id') && $.cookie('token')) {
     //获取文件夹列表
@@ -38,6 +47,53 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
         console.log("书签列表");
         console.log(data);
         $scope.marks = data.data;
+
+      }
+    });
+  };
+  $scope.showMarks = function(id) {
+
+    $.ajax({
+      type: "get",
+      url: Global.uri + "/folders/marks/" + id,
+      data: {
+        user_id: $.cookie('user_id'),
+        token: $.cookie('token')
+      },
+      async: false,
+      error: function(request) {
+        console.error("指定书签列表获取错误!");
+        console.log(request);
+      },
+      success: function(data) {
+        console.log("书签列表");
+        console.log(data);
+        $scope.marks = data.data;
+
+      }
+    });
+  };
+  $scope.showMark = function(id) {
+    $('#mark_edit').siblings().removeClass('active');
+    $('#mark_edit_pane').siblings().removeClass('active');
+    $('#mark_edit').addClass('active');
+    $('#mark_edit_pane').addClass('active');
+    $.ajax({
+      type: "get",
+      url: Global.uri + "/marks/" + id,
+      data: {
+        user_id: $.cookie('user_id'),
+        token: $.cookie('token')
+      },
+      async: false,
+      error: function(request) {
+        console.error("书签详情获取错误!");
+        console.log(request);
+      },
+      success: function(data) {
+        console.log("书签详情");
+        console.log(data);
+        $scope.mark = data.data;
 
       }
     });
@@ -101,9 +157,50 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
         success: function(data) {
           alert(data.message);
           //获取书签列表
+          // $.ajax({
+          //   type: "GET",
+          //   url: Global.uri + "/marks",
+          //   async: false,
+          //   data: {
+          //     user_id: $.cookie('user_id'),
+          //     token: $.cookie('token')
+          //   },
+          //
+          //   error: function(request) {
+          //     console.error("书签列表获取错误!");
+          //     console.log(request);
+          //   },
+          //   success: function(data) {
+          //     console.log("书签列表");
+          //     console.log(data);
+          //     $scope.marks = data.data;
+          //   }
+          // });
+        }
+      })
+    }
+  });
+  //编辑书签
+  $("#mark_edit_form").validate({
+    submitHandler: function() {
+      $.ajax({
+        type: "PUT",
+        url: Global.uri + "/marks/" + $('#mark_id').val(),
+        async: false,
+        data: $.param({
+          'token': $.cookie('token'),
+          'user_id': $.cookie('user_id')
+        }) + '&' + $("#mark_edit_form").serialize(),
+        error: function(request) {
+          console.error("书签编辑错误!");
+          console.log(request);
+        },
+        success: function(data) {
+          alert(data.message);
+          //获取书签列表
           $.ajax({
             type: "GET",
-            url: Global.uri + "/marks",
+            url: Global.uri + "/marks/" + $('#mark_id').val(),
             async: false,
             data: {
               user_id: $.cookie('user_id'),
@@ -111,13 +208,13 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
             },
 
             error: function(request) {
-              console.error("书签列表获取错误!");
+              console.error("书签获取错误!");
               console.log(request);
             },
             success: function(data) {
-              console.log("书签列表");
+              console.log("书签详情");
               console.log(data);
-              $scope.marks = data.data;
+              $scope.mark = data.data;
             }
           });
         }

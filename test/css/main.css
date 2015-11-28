@@ -4,6 +4,7 @@
 
 html, body, .full-height {
   height: 100% !important;
+  min-height: 100% !important;
 }
 .folders {
   background-color: #34495E;
@@ -18,7 +19,6 @@ html, body, .full-height {
   padding: 10px;
   max-width: 500px;
   margin: 0 auto;
-  margin-top: 100px;
 }
 .operate-form input, .operate-form select, .operate-form textarea {
   margin: 10px 0;
@@ -27,4 +27,22 @@ html, body, .full-height {
 .form-title {
   margin-bottom: 20px;
   text-align: center;
+}
+.mark-li{
+  border-bottom: 1px solid #ECF0F1;
+  margin: 0;
+}
+.mark-title {
+padding: 5px 0;
+
+  font-size: 16px;
+
+}
+.mark-describe{
+  display: block;
+  margin: 5px 0;
+}
+
+.mark-li:hover .mark-describe {
+  color: #1ABC9C;
 }
