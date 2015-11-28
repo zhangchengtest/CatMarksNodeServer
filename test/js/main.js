@@ -35,3 +35,21 @@ $("#login_form").validate({
     })
   }
 });
+//注册
+$("#join_form").validate({
+  submitHandler: function() {
+    $.ajax({
+      cache: true,
+      type: "POST",
+      url: Global.uri + "/users/join",
+      data: $("#join_form").serialize(),
+      error: function(request) {
+        console.error("login error!");
+        console.log(request);
+      },
+      success: function(data) {
+        alert(data.message);
+      }
+    })
+  }
+});

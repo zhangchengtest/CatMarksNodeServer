@@ -20,7 +20,7 @@ router.post('/', function(req, res, next) {
     "describe": validator.escape(req.body.describe),
     "sort": 99,
     "status": 1,
-    "date": Date.now() / 1000,
+    "date": Date.now(),
     "folder_id": req.body.folder_id,
   };
   //检查提交的格式
@@ -36,7 +36,7 @@ router.post('/', function(req, res, next) {
         if (results.token == req.body.token && folderInfo.date <= results.delete_time) {
           //检查文件夹是不是已经存在了
           SqlOperation.findSpecify('folders', {
-            title: folderInfo.title
+            title: folderInfo.title,user_id:folderInfo.user_id
           }, function(err, results) {
             if (err) return next(err);
             if (results) {
@@ -80,7 +80,7 @@ router.get('/:id', function(req, res, next) {
     }, function(err, results) {
       if (err) return next(err);
       if (results) {
-        if (results.token == req.query.token && Date.now() / 1000 <= results.delete_time) {
+        if (results.token == req.query.token && Date.now() <= results.delete_time) {
           SqlOperation.findSpecify('folders', {
             _id: SqlOperation.ObjectID(req.params.id)
           }, function(err, results) {
@@ -122,7 +122,7 @@ router.get('/', function(req, res, next) {
     }, function(err, results) {
       if (err) return next(err);
       if (results) {
-        if (results.token == req.query.token && Date.now() / 1000 <= results.delete_time) {
+        if (results.token == req.query.token && Date.now() <= results.delete_time) {
           SqlOperation.findMany('folders', {
             user_id: user_id
           }, function(err, results) {
@@ -180,7 +180,7 @@ router.put('/:id', function(req, res, next) {
     }, function(err, results) {
       if (err) return next(err);
       if (results) {
-        if (results.token == req.body.token && Date.now() / 1000 <= results.delete_time) {
+        if (results.token == req.body.token && Date.now() <= results.delete_time) {
           //更新操作
           SqlOperation.update('folders', {
             _id: SqlOperation.ObjectID(req.params.id)
@@ -225,7 +225,7 @@ router.get('/marks/:id', function(req, res, next) {
       if (err) return next(err);
       if (results) {
 
-        if (results.token == req.query.token && Date.now() / 1000 <= results.delete_time) {
+        if (results.token == req.query.token && Date.now() <= results.delete_time) {
           SqlOperation.findMany('marks', {
             user_id: user_id,
             folder_id: folder_id

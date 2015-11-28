@@ -21,10 +21,10 @@ router.post('/', function(req, res, next) {
     "uri": req.body.uri,
     "describe": validator.escape(req.body.describe),
     "content": req.body.content,
-    "tag": req.body.tag,
+    "tags": req.body.tags,
     "sort": req.body.sort,
     "status": 1,
-    "date": Date.now() / 1000
+    "date": Date.now()
   };
   console.log(SqlOperation.ObjectID(req.body.folder_id));
   //检查提交的格式
@@ -84,7 +84,7 @@ router.get('/:id', function(req, res, next) {
     }, function(err, results) {
       if (err) return next(err);
       if (results) {
-        if (results.token == req.query.token && Date.now() / 1000 <= results.delete_time) {
+        if (results.token == req.query.token && Date.now() <= results.delete_time) {
           SqlOperation.findSpecify('marks', {
             _id: SqlOperation.ObjectID(req.params.id)
           }, function(err, results) {
@@ -126,7 +126,7 @@ router.get('/', function(req, res, next) {
     }, function(err, results) {
       if (err) return next(err);
       if (results) {
-        if (results.token == req.query.token && Date.now() / 1000 <= results.delete_time) {
+        if (results.token == req.query.token && Date.now() <= results.delete_time) {
           SqlOperation.findMany('marks', {
             user_id: user_id
           }, function(err, results) {
@@ -166,7 +166,7 @@ router.put('/:id', function(req, res, next) {
       "tag": req.body.tag,
       "sort": req.body.sort,
       "status": req.body.status,
-      "date": Date.now() / 1000
+      "date": Date.now()
     },
     updateInfo = {};
 
@@ -188,7 +188,7 @@ router.put('/:id', function(req, res, next) {
 
       if (err) return next(err);
       if (results) {
-        if (results.token == req.body.token && Date.now() / 1000 <= results.delete_time) {
+        if (results.token == req.body.token && Date.now() <= results.delete_time) {
           //更新操作
           SqlOperation.update('marks', {
             _id: SqlOperation.ObjectID(req.params.id)

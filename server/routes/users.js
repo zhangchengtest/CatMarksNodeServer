@@ -55,7 +55,7 @@ router.post('/login', function(req, res, next) {
             username: userInfo.username
           }, {
             "$set": {
-              recently_time: Date.now() / 1000
+              recently_time: Date.now()
             }
           }, function(err, results) {
             //异常处理
@@ -76,8 +76,8 @@ router.post('/login', function(req, res, next) {
               SqlOperation.insert('tokens', {
                 user_id: userInfo._id,
                 token: token,
-                create_time: Date.now() / 1000,
-                delete_time: Date.now() / 1000 + (86400 * 7)
+                create_time: Date.now(),
+                delete_time: Date.now() + (86400 * 7)
               }, function(err, results) {
                 //异常处理
                 if (err) return next(err);
@@ -117,7 +117,7 @@ router.post('/join', function(req, res, next) {
     username: validator.escape(req.body.username),
     email: req.body.email,
     password: md5(req.body.password),
-    register_time: Date.now() / 1000,
+    register_time: Date.now(),
     role: 1,
     level: 0,
     status: 1
@@ -152,19 +152,52 @@ router.post('/join', function(req, res, next) {
 
           console.log(results);
           if (results.result.ok == 1) {
-            //注册成功
-            //向注册用户发送邮件
-            // var mailOptions = {
-            //   from: '####@###.###',
-            //   to: joinInfo.email,
-            //   subject: 'Hello ' + joinInfo.username,
-            //   text: 'Welcome to join our NetMarks !',
-            //   html: '<b>Thank you !</b>'
-            // };
-            // sendEmail(mailOptions, function(results) {
-            //   console.log(results);
-            // })
-            res.status(200).send(config.usersRes.status1000);
+            //注册用户信息
+            var userJoinInfo = results.ops[0];
+            //为注册用户创建root文件夹
+            var folderInfo = {
+              "user_id": SqlOperation.ObjectID(userJoinInfo._id),
+              "title": "默认文件夹",
+              "describe": "在用户注册的时候，由系统自动创建的最底层文件夹",
+              "sort": 99,
+              "status": 1,
+              "date": Date.now(),
+            };
+            SqlOperation.insert('folders', folderInfo, function(err, results) {
+              if (err) return next(err);
+              if (results.result.ok == 1) {
+                //文件夹添加结果
+                var folderAddInfo = results.ops[0];
+                //更新用户文件夹信息
+                SqlOperation.update('users', {
+                  _id: SqlOperation.ObjectID(userJoinInfo._id)
+                }, {
+                  "$set": {
+                    root: folderAddInfo._id
+                  }
+                }, function(err, results) {
+                  //异常处理
+                  if (err) return next(err);
+                  console.log("文件夹注册信息更新结果");
+                  console.log(results);
+                });
+                //向注册用户发送邮件
+                // var mailOptions = {
+                //   from: '####@###.###',
+                //   to: joinInfo.email,
+                //   subject: 'Hello ' + joinInfo.username,
+                //   text: 'Welcome to join our NetMarks !',
+                //   html: '<b>Thank you !</b>'
+                // };
+                // sendEmail(mailOptions, function(results) {
+                //   console.log(results);
+                // })
+                res.status(200).send(config.usersRes.status1000);
+              } else {
+                res.status(200).send(config.serverRes.status5001);
+              }
+            })
+
           } else {
             res.status(200).send(config.serverRes.status5001);
           }
@@ -198,7 +231,7 @@ router.get('/all', function(req, res, value, next) {
 router.get('/:id', function(req, res, next) {
   var userId = SqlOperation.ObjectID(req.params.id);
   var token = req.query.token;
-  var nowTime = Date.now() / 1000;
+  var nowTime = Date.now();
   SqlOperation.findSpecify('tokens', {
     user_id: userId
   }, function(err, results) {

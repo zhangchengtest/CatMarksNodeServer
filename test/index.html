@@ -27,7 +27,7 @@
     <div class="row full-height">
       <div class="col-md-2 folders full-height">
         <ul class="nav nav-pills nav-stacked ">
-          <li ng-repeat="folder in folders">
+          <li ng-repeat="folder in folders" ng-click="showMarks(folder._id)">
             <a href="#">
               <span ng-bind="folder.title"></span>
             </a>
@@ -36,9 +36,10 @@
       </div>
       <div class="col-md-3 marks full-height">
         <ul class="nav nav-pills nav-stacked ">
-          <li ng-repeat="mark in marks">
-            <a href="#">
-              <span ng-bind="mark.title"></span>
+          <li ng-repeat="mark in marks" ng-click="showMark(mark._id)" class="mark-li">
+            <a href="#" class="mark-uri">
+              <span ng-bind="mark.title" class="mark-title"></span>
+              <span ng-bind="mark.describe" class="mark-describe"></span>
             </a>
           </li>
         </ul>
@@ -47,6 +48,8 @@
         <ul class="nav nav-tabs">
           <li id="marks_add"><a href="#marks_pane" data-toggle="tab">添加书签</a></li>
           <li id="folders_add"><a href="#folders_pane" data-toggle="tab">添加文件夹</a></li>
+          <li id="mark_edit"><a href="#mark_edit_pane" data-toggle="tab">编辑书签</a></li>
+          <li id="folder_edit"><a href="#folder_edit_pane" data-toggle="tab">编辑文件夹</a></li>
           <li class="pull-right"><a href="#">Fork me on GitHub!</a></li>
           <li class="pull-right active" id="login_btn"><a data-toggle="tab" href="#login_pane">登录</a></li>
           <li class="pull-right" id="join_btn"><a data-toggle="tab" href="#join_pane">注册</a></li>
@@ -61,19 +64,28 @@
               <button class="btn btn-lg btn-primary btn-block" type="submit">登 录</button>
             </form>
           </div>
+          <div class="tab-pane" id="join_pane">
+            <form id="join_form" class="operate-form">
+              <h2 class="form-title">注 册</h2>
+              <input type="text" class="form-control" name="username" placeholder="用户名">
+              <input type="email" class="form-control" name="email" placeholder="邮箱">
+              <input type="password" class="form-control" name="password" placeholder="密码">
+              <button class="btn btn-lg btn-primary btn-block" type="submit">注 册</button>
+            </form>
+          </div>
           <div class="tab-pane " id="marks_pane">
 
 
             <form id="mark_add_form" class="operate-form">
-              <h2 lass="form-title">添加书签</h2>
+              <h2 class="form-title">添加书签</h2>
 
               <input type="text" name="title" class="form-control" placeholder="标题">
               <input type="text" name="uri" class="form-control" placeholder="链接">
-              <textarea name="describe" rows="5" class="form-control" placeholder="描述"></textarea>
+              <textarea name="describe" class="form-control" placeholder="描述"></textarea>
 
-              <textarea name="content" rows="5" class="form-control" placeholder="内容"></textarea>
+              <textarea name="content" class="form-control" placeholder="内容"></textarea>
 
-              <input type="text" name="tags" class="form-control" placeholder="标记">
+              <input type="text" name="tags" class="form-control" placeholder="标签">
               <input type="number" name="sort" class="form-control" placeholder="排序">
               <select class="form-control" name="folder_id">
                 <option ng-repeat="folder in folders" ng-value="folder._id">{{folder.title}}</option>
@@ -88,7 +100,7 @@
               <h2 class="form-title">添加文件夹</h2>
 
               <input type="text" name="title" placeholder="标题" class="form-control">
-              <textarea name="describe" placeholder="描述" rows="5" class="form-control"></textarea>
+              <textarea name="describe" placeholder="描述" class="form-control"></textarea>
               <select class="form-control" name="folder_id" id="folder_select">
                 <option value="0" selected="selected">无父级</option>
                 <option ng-repeat="folder in folders" ng-value="folder._id">{{folder.title}}</option>
@@ -96,6 +108,30 @@
 
               <button class="btn btn-lg btn-primary btn-block" type="submit">添 加</button>
 
+            </form>
+          </div>
+          <div class="tab-pane" id="mark_edit_pane">
+            <form id="mark_edit_form" class="operate-form">
+              <h2 class="form-title">书签详情</h2>
+              <input type="hidden" class="form-control" ng-value="mark._id" id="mark_id">
+              <input type="text" name="title" class="form-control" placeholder="标题" ng-value="mark.title">
+              <input type="text" name="uri" class="form-control" placeholder="链接" ng-value="mark.uri">
+              <textarea name="describe" class="form-control" placeholder="描述" ng-bind="mark.describe"></textarea>
+              <textarea name="content" class="form-control" placeholder="内容" ng-bind="mark.content"></textarea>
+              <input type="text" name="tags" class="form-control" placeholder="标签" ng-value="mark.tags">
+              <input type="number" name="sort" class="form-control" placeholder="排序" ng-value="mark.sort">
+
+              <input type="radio" ng-model="mark.status" name="status" value="1"> 可用
+              <input type="radio" ng-model="mark.status" name="status" value="0"> 不可用
+
+              <!-- <input type="radio" name="status" value="1">可用
+              <input type="radio" name="status" value="0">不可用 -->
+              <input type="text" name="date" class="form-control" placeholder="创建日期" ng-value="mark.date | date:'yyyy-MM-dd'">
+              <select class="form-control" name="folder_id" ng-model="mark.folder_id">
+
+                <option ng-repeat="folder in folders">{{folder._id}}</option>
+              </select>
+              <button class="btn btn-lg btn-primary btn-block" type="submit">编 辑</button>
             </form>
           </div>
 

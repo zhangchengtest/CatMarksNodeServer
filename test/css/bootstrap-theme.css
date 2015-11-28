@@ -19,6 +19,9 @@ body {
   border-radius: 0;
   border: 0;
 }
+.nav-stacked>li+li{
+  margin-top: 0;
+}
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
   background-color: #16A085;
   color: #ECF0F1;
