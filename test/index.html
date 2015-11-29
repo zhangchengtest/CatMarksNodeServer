@@ -15,6 +15,7 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/bootstrap-theme.css">
+  <link rel="stylesheet" href="js/vendor/sweet-alert/sweetalert.css">
   <link rel="stylesheet" href="css/main.css">
   <!-- <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script> -->
 </head>
@@ -30,7 +31,9 @@
           <li ng-repeat="folder in folders" ng-click="showMarks(folder._id)">
             <a href="#">
               <span ng-bind="folder.title"></span>
+              <!-- <span ng-click="showFolder(folder._id)" class="pull-right"> Edit</span> -->
             </a>
+
           </li>
         </ul>
       </div>
@@ -39,7 +42,7 @@
           <li ng-repeat="mark in marks" ng-click="showMark(mark._id)" class="mark-li">
             <a href="#" class="mark-uri">
               <span ng-bind="mark.title" class="mark-title"></span>
-              <span ng-bind="mark.describe" class="mark-describe"></span>
+              <span ng-bind="mark.uri" class="mark-describe"></span>
             </a>
           </li>
         </ul>
@@ -63,6 +66,15 @@
               <input type="password" class="form-control" name="password" placeholder="密码" required="">
               <button class="btn btn-lg btn-primary btn-block" type="submit">登 录</button>
             </form>
+            <hr>
+            <div class="system-intro">
+              <h3>NetMarks，一款简单的网络书签管理应用。</h2>
+              <p>简洁明了的操作体验，用于在线同步网络书签。
+              <ul>
+                <li>账号注册规则：5-10位英文或数字的组合；</li>
+                <li>密码填写规则：6-15位英文或数字的组合；</li>
+              </ul></p>
+            </div>
           </div>
           <div class="tab-pane" id="join_pane">
             <form id="join_form" class="operate-form">
@@ -88,7 +100,7 @@
               <input type="text" name="tags" class="form-control" placeholder="标签">
               <input type="number" name="sort" class="form-control" placeholder="排序">
               <select class="form-control" name="folder_id">
-                <option ng-repeat="folder in folders" ng-value="folder._id">{{folder.title}}</option>
+                <option ng-repeat="folder in folders" value={{folder._id}}>{{folder.title}}</option>
               </select>
 
               <button class="btn btn-lg btn-primary btn-block" type="submit">添 加</button>
@@ -101,10 +113,9 @@
 
               <input type="text" name="title" placeholder="标题" class="form-control">
               <textarea name="describe" placeholder="描述" class="form-control"></textarea>
-              <select class="form-control" name="folder_id" id="folder_select">
-                <option value="0" selected="selected">无父级</option>
-                <option ng-repeat="folder in folders" ng-value="folder._id">{{folder.title}}</option>
-              </select>
+              <!-- <select class="form-control" name="folder_id" id="folder_select">
+                <option ng-repeat="folder in rootfolders" ng-model="folder._id">{{folder.title}}</option>
+              </select> -->
 
               <button class="btn btn-lg btn-primary btn-block" type="submit">添 加</button>
 
@@ -114,27 +125,41 @@
             <form id="mark_edit_form" class="operate-form">
               <h2 class="form-title">书签详情</h2>
               <input type="hidden" class="form-control" ng-value="mark._id" id="mark_id">
-              <input type="text" name="title" class="form-control" placeholder="标题" ng-value="mark.title">
-              <input type="text" name="uri" class="form-control" placeholder="链接" ng-value="mark.uri">
-              <textarea name="describe" class="form-control" placeholder="描述" ng-bind="mark.describe"></textarea>
-              <textarea name="content" class="form-control" placeholder="内容" ng-bind="mark.content"></textarea>
-              <input type="text" name="tags" class="form-control" placeholder="标签" ng-value="mark.tags">
-              <input type="number" name="sort" class="form-control" placeholder="排序" ng-value="mark.sort">
+              <input type="text" name="title" class="form-control" placeholder="标题" ng-model="mark.title">
+              <input type="text" name="uri" class="form-control" placeholder="链接" ng-model="mark.uri">
+
+              <textarea name="describe" class="form-control" placeholder="描述" ng-model="mark.describe"></textarea>
+              <textarea name="content" class="form-control" placeholder="内容" ng-model="mark.content"></textarea>
+              <input type="text" name="tags" class="form-control" placeholder="标签" ng-model="mark.tags">
+              <input type="number" name="sort" class="form-control" placeholder="排序" ng-model="mark.sort">
 
               <input type="radio" ng-model="mark.status" name="status" value="1"> 可用
               <input type="radio" ng-model="mark.status" name="status" value="0"> 不可用
 
               <!-- <input type="radio" name="status" value="1">可用
               <input type="radio" name="status" value="0">不可用 -->
-              <input type="text" name="date" class="form-control" placeholder="创建日期" ng-value="mark.date | date:'yyyy-MM-dd'">
+              <input type="text" name="date" class="form-control" placeholder="创建日期" ng-model="mark.date | date:'yyyy-MM-dd'" disabled="">
               <select class="form-control" name="folder_id" ng-model="mark.folder_id">
-
-                <option ng-repeat="folder in folders">{{folder._id}}</option>
+                <option ng-repeat="folder in folders" value="{{folder._id}}">{{folder.title}}</option>
               </select>
               <button class="btn btn-lg btn-primary btn-block" type="submit">编 辑</button>
             </form>
           </div>
-
+          <div class="tab-pane" id="folder_edit_pane">
+            <form id="folder_edit_form" class="operate-form">
+              <h2 class="form-title">文件夹详情</h2>
+              <input type="hidden" name="_id" ng-value="folder._id" class="form-control" id="folder_id">
+              <input type="text" name="title" ng-model="folder.title" class="form-control" placeholder="标题">
+              <textarea name="describe" ng-model="folder.describe" class="form-control" placeholder="描述"></textarea>
+              <input type="number" name="sort" ng-model="folder.sort" class="form-control" placeholder="排序">
+              <input type="radio" ng-model="folder.status" name="status" value="1"> 可用
+              <input type="radio" ng-model="folder.status" name="status" value="0"> 不可用
+              <!-- <select class="form-control" name="folder_id" ng-model="folder.folder_id">
+                <option ng-repeat="folder in rootfolders">{{folder._id}}</option>
+              </select> -->
+              <button class="btn btn-lg btn-primary btn-block" type="submit">编 辑</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -144,6 +169,9 @@
   <script src="js/vendor/jquery.validate.min.js"></script>
   <script src="js/vendor/angular.min.js"></script>
   <script src="js/vendor/bootstrap.min.js"></script>
+  <script src="js/vendor/sweet-alert/sweetalert.min.js"></script>
+  <script src="js/vendor/jquery.bootstrap-growl.min.js"></script>
+
   <script src="js/global.js"></script>
   <script src="js/main.js"></script>
   <script src="js/controller.js"></script>

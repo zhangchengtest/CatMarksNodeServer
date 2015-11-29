@@ -92,6 +92,19 @@ SqlOperation.prototype.findMany = function(collectionName, queryString, callback
     })
   });
 };
+SqlOperation.prototype.sort = function(collectionName, queryString, sortString, callback) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      callback(err, null);
+    }
+    assert.equal(null, err);
+    console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
+    sort(db, collectionName, queryString,sortString, function(err, results) {
+      db.close();
+      callback(err, results);
+    })
+  });
+};
 SqlOperation.prototype.removeOne = function(collectionName, queryString, callback) {
   MongoClient.connect(url, function(err, db) {
     if (err) {
@@ -188,6 +201,21 @@ var findSpecify = function(db, collectionName, queryString, callback) {
     assert.equal(err, null);
     if (results != null) {
       returnResult = results
+    } else {
+      callback(err, returnResult);
+    }
+  });
+};
+//sort
+var sort = function(db, collectionName, queryString, sortString, callback) {
+
+  var returnResult = [];
+  var cursor = db.collection(collectionName).find(queryString).sort(sortString);
+  console.log("find some documents in " + collectionName + " collection with  sort");
+  cursor.each(function(err, result) {
+    assert.equal(err, null);
+    if (result != null) {
+      returnResult.push(result);
     } else {
       callback(err, returnResult);
     }

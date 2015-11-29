@@ -27,28 +27,35 @@ router.use(bodyParser.urlencoded({ // to support URL-encoded bodies
 
 //用户登录
 router.post('/login', function(req, res, next) {
-  var loginInfo = {
-    username: req.body.username,
-    password: req.body.password
+  var checkResult;
+  var loginParams = {};
+  //根据用户提交的信息来判断是利用邮件登录还是帐号登录
+  if (validator.isEmail(req.body.username)) {
+    checkResult = validator.isLength(req.body.password, 6, 15);
+    loginParams = {
+      email: req.body.username
+    }
+  } else {
+    checkResult = validator.isAlphanumeric(req.body.username) && validator.isLength(req.body.password, 6, 15) && validator.isLength(req.body.username, 5, 10);
+    loginParams = {
+      username: req.body.username
+    }
   }
+
+
 
   //登录信息格式校验
   //用户名不能为空，5-10个数字或英文字符
   //密码不能为空，6-15个数字或英文字符
-  var check1 = validator.isAlphanumeric(loginInfo.username);
-  //var check2 = validator.isAlphanumeric(loginInfo.password);
-  var check3 = validator.isLength(loginInfo.username, 5, 10);
-  var check4 = validator.isLength(loginInfo.password, 6, 15);
 
-  if (check1 && check3 && check4) {
-    SqlOperation.findSpecify('users', {
-      username: loginInfo.username
-    }, function(err, results) {
+
+  if (checkResult) {
+    SqlOperation.findSpecify('users', loginParams, function(err, results) {
       //异常处理
       if (err) return next(err);
 
       if (results) {
-        if (results.password == md5(loginInfo.password)) {
+        if (results.password == md5(req.body.password)) {
           var userInfo = results;
           //更新用户最近登录时间,非阻塞
           SqlOperation.update('users', {
@@ -77,7 +84,7 @@ router.post('/login', function(req, res, next) {
                 user_id: userInfo._id,
                 token: token,
                 create_time: Date.now(),
-                delete_time: Date.now() + (86400 * 7)
+                delete_time: Date.now() + (86400000 * 7)
               }, function(err, results) {
                 //异常处理
                 if (err) return next(err);
@@ -105,7 +112,6 @@ router.post('/login', function(req, res, next) {
     });
   } else {
     console.log("格式不正确");
-    console.log("username:" + check1 + " username5-10:" + check3 + " password6-16:" + check4);
     res.status(200).json(config.usersRes.status1010);
   }
 });
@@ -124,23 +130,25 @@ router.post('/join', function(req, res, next) {
   };
   //注册信息格式校验
   //用户名不能为空，5-10个数字或英文字符
-  //密码不能为空，32个数字或英文字符
-  var check1 = validator.isAlphanumeric(joinInfo.username);
-  //var check2 = validator.isAlphanumeric(joinInfo.password);
-  var check3 = validator.isEmail(joinInfo.email);
-  var check4 = validator.isLength(joinInfo.username, 5, 10);
-  var check5 = validator.isLength(req.body.password, 6, 15);
-  if (check1 && check3 && check4 && check5) {
+  //密码不能为空，6-15个数字或英文字符
+  var joinCheckResult = validator.isAlphanumeric(joinInfo.username) && validator.isEmail(joinInfo.email) && validator.isLength(joinInfo.username, 5, 10) && validator.isLength(req.body.password, 6, 15);
+  if (joinCheckResult) {
     console.log("格式通过");
-    //检查用户是否存在
-    SqlOperation.findSpecify('users', {
-      username: req.body.username
-    }, function(err, results) {
+    //检查用户和邮箱是否存在
+    var findUserParams = {
+      "$or": [{
+        "username": req.body.username
+      }, {
+        "email": req.body.email
+      }]
+    }
+    SqlOperation.findSpecify('users', findUserParams, function(err, results) {
       console.log("====检查用户是否存在====");
       //异常处理
       if (err) return next(err);
 
       console.log(results);
+
       if (results) {
         res.status(200).send(config.usersRes.status1005);
       } else {
@@ -149,26 +157,25 @@ router.post('/join', function(req, res, next) {
           console.log("====注册用户====");
           //异常处理
           if (err) return next(err);
-
           console.log(results);
           if (results.result.ok == 1) {
             //注册用户信息
             var userJoinInfo = results.ops[0];
             //为注册用户创建root文件夹
-            var folderInfo = {
+            var rootInfo = {
               "user_id": SqlOperation.ObjectID(userJoinInfo._id),
-              "title": "默认文件夹",
-              "describe": "在用户注册的时候，由系统自动创建的最底层文件夹",
+              "title": "根目录",
+              "describe": "在用户注册的时候，由系统自动创建，为所有文件夹的最底层容器",
               "sort": 99,
               "status": 1,
               "date": Date.now(),
             };
-            SqlOperation.insert('folders', folderInfo, function(err, results) {
+            SqlOperation.insert('folders', rootInfo, function(err, results) {
               if (err) return next(err);
               if (results.result.ok == 1) {
                 //文件夹添加结果
                 var folderAddInfo = results.ops[0];
-                //更新用户文件夹信息
+                //更新用户根目录信息
                 SqlOperation.update('users', {
                   _id: SqlOperation.ObjectID(userJoinInfo._id)
                 }, {
@@ -178,21 +185,44 @@ router.post('/join', function(req, res, next) {
                 }, function(err, results) {
                   //异常处理
                   if (err) return next(err);
-                  console.log("文件夹注册信息更新结果");
+                  console.log("用默认文件夹添加结果");
                   console.log(results);
+                  if (results.result.ok == 1) {
+                    //为用户创建默认文件夹
+                    var folderInfo = {
+                      "user_id": SqlOperation.ObjectID(userJoinInfo._id),
+                      "title": "默认文件夹",
+                      "describe": "在用户注册的时候，由系统自动为用户创建的默认文件夹",
+                      "sort": 99,
+                      "status": 1,
+                      "date": Date.now(),
+                      "folder_id": SqlOperation.ObjectID(folderAddInfo._id)
+                    };
+                    SqlOperation.insert('folders', folderInfo, function(err, results) {
+                      if (err) return next(err);
+                      if (results.result.ok == 1) {
+                        //默认文件夹添加结果
+                        //向注册用户发送邮件
+                        // var mailOptions = {
+                        //   from: '####@###.###',
+                        //   to: joinInfo.email,
+                        //   subject: 'Hello ' + joinInfo.username,
+                        //   text: 'Welcome to join our NetMarks !',
+                        //   html: '<b>Thank you !</b>'
+                        // };
+                        // sendEmail(mailOptions, function(results) {
+                        //   console.log(results);
+                        // })
+                        res.status(200).send(config.usersRes.status1000);
+                      } else {
+                        res.status(200).send(config.serverRes.status5001);
+                      }
+                    });
+                  } else {
+                    res.status(200).send(config.serverRes.status5001);
+                  }
                 });
-                //向注册用户发送邮件
-                // var mailOptions = {
-                //   from: '####@###.###',
-                //   to: joinInfo.email,
-                //   subject: 'Hello ' + joinInfo.username,
-                //   text: 'Welcome to join our NetMarks !',
-                //   html: '<b>Thank you !</b>'
-                // };
-                // sendEmail(mailOptions, function(results) {
-                //   console.log(results);
-                // })
-                res.status(200).send(config.usersRes.status1000);
+
               } else {
                 res.status(200).send(config.serverRes.status5001);
               }
@@ -206,7 +236,6 @@ router.post('/join', function(req, res, next) {
     });
   } else {
     console.log("注册格式不对");
-    console.log("username:" + check1 + " email:" + check3 + " username5-10:" + check4 + " password6-16:" + check5);
     res.status(200).json(config.usersRes.status1010);
   }
 });
