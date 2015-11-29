@@ -21,7 +21,7 @@ router.post('/', function(req, res, next) {
     "sort": 99,
     "status": 1,
     "date": Date.now(),
-    "folder_id": req.body.folder_id,
+    "folder_id": SqlOperation.ObjectID(req.body.folder_id),
   };
   //检查提交的格式
   var check1 = validator.isMongoId(folderInfo.user_id),
@@ -36,7 +36,8 @@ router.post('/', function(req, res, next) {
         if (results.token == req.body.token && folderInfo.date <= results.delete_time) {
           //检查文件夹是不是已经存在了
           SqlOperation.findSpecify('folders', {
-            title: folderInfo.title,user_id:folderInfo.user_id
+            title: folderInfo.title,
+            user_id: folderInfo.user_id
           }, function(err, results) {
             if (err) return next(err);
             if (results) {
@@ -113,6 +114,20 @@ router.get('/:id', function(req, res, next) {
 //获取所有文件夹
 router.get('/', function(req, res, next) {
   var user_id = SqlOperation.ObjectID(req.query.user_id);
+  if (req.query.folder_id) {
+    var folder_id = SqlOperation.ObjectID(req.query.folder_id);
+    var getInfo = {
+      user_id: user_id,
+      folder_id: folder_id
+    }
+  } else {
+    var getInfo = {
+      user_id: user_id
+    }
+  }
+  var sortInfo = {
+    sort: 1
+  };
   //格式校验
   var check1 = validator.isMongoId(req.query.user_id),
     check2 = validator.isUUID(req.query.token, 4);
@@ -123,9 +138,7 @@ router.get('/', function(req, res, next) {
       if (err) return next(err);
       if (results) {
         if (results.token == req.query.token && Date.now() <= results.delete_time) {
-          SqlOperation.findMany('folders', {
-            user_id: user_id
-          }, function(err, results) {
+          SqlOperation.sort('folders', getInfo, sortInfo, function(err, results) {
             if (err) return next(err);
             if (results) {
               config.folderRes.status4000.data = results;
@@ -156,19 +169,22 @@ router.put('/:id', function(req, res, next) {
   var folderInfo = {
       "title": validator.escape(req.body.title),
       "describe": validator.escape(req.body.describe),
-      "sort": req.body.sort,
-      "status": req.body.status,
-      "folder_id": req.body.folder_id,
+      "sort": Number(req.body.sort),
+      "status": Number(req.body.status),
+      "folder_id": SqlOperation.ObjectID(req.body.folder_id),
     },
     updateInfo = {};
 
   //将不为空的内容组成新的json字段
   for (var key in folderInfo) {
-    if (folderInfo[key] != "") {
+    if (folderInfo[key] != "" || folderInfo[key] == 0) {
       updateInfo[key] = folderInfo[key]
     }
   }
-
+  console.log("folder信息");
+  console.log(folderInfo);
+  console.log("更新信息");
+  console.log(updateInfo);
   var user_id = SqlOperation.ObjectID(req.body.user_id);
   //格式校验
   var check1 = validator.isMongoId(req.body.user_id),
@@ -213,7 +229,9 @@ router.put('/:id', function(req, res, next) {
 router.get('/marks/:id', function(req, res, next) {
   var user_id = SqlOperation.ObjectID(req.query.user_id);
   var folder_id = SqlOperation.ObjectID(req.params.id);
-
+  var sortInfo = {
+    sort: 1
+  };
   //格式校验
   var check1 = validator.isMongoId(req.query.user_id),
     check2 = validator.isMongoId(req.params.id),
@@ -226,20 +244,21 @@ router.get('/marks/:id', function(req, res, next) {
       if (results) {
 
         if (results.token == req.query.token && Date.now() <= results.delete_time) {
-          SqlOperation.findMany('marks', {
-            user_id: user_id,
-            folder_id: folder_id
-          }, function(err, results) {
-            if (err) return next(err);
-            if (results) {
-              config.markRes.status3000.data = results;
-              res.status(200).send(config.markRes.status3000);
-              config.markRes.status3000.data = null;
-            } else {
-              config.markRes.status3000.data = "";
-              res.status(200).send(config.markRes.status3000);
-            }
-          })
+          SqlOperation.sort('marks', {
+              user_id: user_id,
+              folder_id: folder_id
+            }, sortInfo,
+            function(err, results) {
+              if (err) return next(err);
+              if (results) {
+                config.markRes.status3000.data = results;
+                res.status(200).send(config.markRes.status3000);
+                config.markRes.status3000.data = null;
+              } else {
+                config.markRes.status3000.data = "";
+                res.status(200).send(config.markRes.status3000);
+              }
+            })
         } else {
           //token已失效
           res.status(200).send(config.tokenRes.status2003);

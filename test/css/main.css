@@ -15,7 +15,7 @@ html, body, .full-height {
 .operates {
   background-color: #ECF0F1;
 }
-.operate-form {
+.operate-form, .system-intro {
   padding: 10px;
   max-width: 500px;
   margin: 0 auto;
@@ -28,21 +28,27 @@ html, body, .full-height {
   margin-bottom: 20px;
   text-align: center;
 }
-.mark-li{
+.mark-li {
   border-bottom: 1px solid #ECF0F1;
   margin: 0;
 }
 .mark-title {
-padding: 5px 0;
-
+  padding: 5px 0;
   font-size: 16px;
-
 }
-.mark-describe{
+.mark-describe {
   display: block;
   margin: 5px 0;
 }
-
 .mark-li:hover .mark-describe {
   color: #1ABC9C;
 }
+.system-intro h3 {
+  text-align: center;
+}
+.bootstrap-growl {
+
+}
+.alert {border-radius: 0;background-color: #34495E;}
+.alert-info {color: #1ABC9C;}
+.alert-dismissible {color: #1ABC9C;}

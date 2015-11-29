@@ -39,7 +39,7 @@ var config = {
     status1005: {
       code: 1005,
       status: 200,
-      message: "该用户名已被注册!"
+      message: "该账号或邮箱已被注册!"
     },
     status1006: {
       code: 1006,
