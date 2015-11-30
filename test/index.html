@@ -32,13 +32,13 @@
             <span ng-bind="folder.title"></span>
           </a>
 
-          <ul class="tree-folders">
+            <ul class="nav nav-pills nav-stacked subMenu">
             <li ng-repeat="folder in folder.sub" ng-include="'categoryTree'" ng-click="showMarks($event,folder._id)">
             </li>
           </ul>
         </script>
         <ul class="nav nav-pills nav-stacked ">
-          <li ng-repeat="folder in folders" ng-include="'categoryTree'" ng-click="showMarks($event,folder._id)">
+          <li class="rootMenu" ng-repeat="folder in folders" ng-include="'categoryTree'" ng-click="showMarks($event,folder._id)">
 
           </li>
         </ul>
