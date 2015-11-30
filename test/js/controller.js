@@ -46,27 +46,47 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
       $scope.subMenu(newArray, data);
     };
     $scope.subMenu = function(newArray, data) {
-      var times = 0;
+
       var len = newArray.length;
       var len1 = data.length;
+
+
       for (var i = 0; i < len; i++) {
+        newArray[i].sub = new Array;
         for (var j = 0; j < len1; j++) {
-          if (times < len1) {
-            if (newArray[i]._id == data[j].folder_id) {
-              newArray[i].sub = new Array;
-              newArray[i].sub.push(data[j]);
-              $scope.subMenu(newArray[i].sub, data);
-            } else {
-              times++;
-            }
-          } else {
-            console.log("新数组");
-            console.log(newArray);
-            $scope.folders = newArray
+          if (newArray[i]._id == data[j].folder_id) {
+            newArray[i].sub.push(data[j]);
           }
         }
       }
+
+      $scope.folders = newArray;
+
+
+
     };
+    // $scope.subMenu = function(newArray, data) {
+    //   var times = 0;
+    //   var len = newArray.length;
+    //   var len1 = data.length;
+    //   for (var i = 0; i < len; i++) {
+    //     for (var j = 0; j < len1; j++) {
+    //       if (times < len1) {
+    //         if (newArray[i]._id == data[j].folder_id) {
+    //           newArray[i].sub = new Array;
+    //           newArray[i].sub.push(data[j]);
+    //           $scope.subMenu(newArray[i].sub, data);
+    //         } else {
+    //           times++;
+    //         }
+    //       } else {
+    //         console.log("新数组");
+    //         console.log(newArray);
+    //         $scope.folders = newArray
+    //       }
+    //     }
+    //   }
+    // };
     $scope.getTreeFolders = function() {
       //获取文件夹列表，含根目录
       $.ajax({
@@ -113,9 +133,11 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
   if ($.cookie('user_id') && $.cookie('token')) {
     $scope.getFoldersAndMarks();
   };
-  $scope.showMarks = function(event,id) {
-    event.stopPropagation();
+  $scope.showMarks = function(event, id) {
+    //event.stopPropagation();
     $scope.showFolder(id);
+    var obj = event.target;
+  $(obj).parents('.rootMenu').children('.subMenu').eq(0).toggle();
     $.ajax({
       type: "get",
       url: Global.uri + "/folders/marks/" + id,
