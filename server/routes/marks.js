@@ -21,10 +21,10 @@ router.post('/', function(req, res, next) {
     "uri": req.body.uri,
     "describe": validator.escape(req.body.describe),
     "content": req.body.content,
-    "tag": req.body.tag,
-    "sort": req.body.sort,
+    "tags": req.body.tags,
+    "sort": Number(req.body.sort),
     "status": 1,
-    "date": Date.now() / 1000
+    "date": Date.now()
   };
   console.log(SqlOperation.ObjectID(req.body.folder_id));
   //检查提交的格式
@@ -84,7 +84,7 @@ router.get('/:id', function(req, res, next) {
     }, function(err, results) {
       if (err) return next(err);
       if (results) {
-        if (results.token == req.query.token && Date.now() / 1000 <= results.delete_time) {
+        if (results.token == req.query.token && Date.now() <= results.delete_time) {
           SqlOperation.findSpecify('marks', {
             _id: SqlOperation.ObjectID(req.params.id)
           }, function(err, results) {
@@ -120,16 +120,19 @@ router.get('/', function(req, res, next) {
   //格式校验
   var check1 = validator.isMongoId(req.query.user_id),
     check2 = validator.isUUID(req.query.token, 4);
+  var sortInfo = {
+    sort: 1
+  };
   if (check1 && check2) {
     SqlOperation.findSpecify('tokens', {
       user_id: user_id
     }, function(err, results) {
       if (err) return next(err);
       if (results) {
-        if (results.token == req.query.token && Date.now() / 1000 <= results.delete_time) {
-          SqlOperation.findMany('marks', {
+        if (results.token == req.query.token && Date.now() <= results.delete_time) {
+          SqlOperation.sort('marks', {
             user_id: user_id
-          }, function(err, results) {
+          }, sortInfo, function(err, results) {
             if (err) return next(err);
             if (results) {
               config.markRes.status3000.data = results;
@@ -160,19 +163,19 @@ router.put('/:id', function(req, res, next) {
   var markInfo = {
       "folder_id": SqlOperation.ObjectID(req.body.folder_id),
       "title": validator.escape(req.body.title),
-      "uri": validator.escape(req.body.uri),
+      "uri": req.body.uri,
       "describe": validator.escape(req.body.describe),
       "content": req.body.content,
       "tag": req.body.tag,
-      "sort": req.body.sort,
-      "status": req.body.status,
-      "date": Date.now() / 1000
+      "sort": Number(req.body.sort),
+      "status": Number(req.body.status),
+      "date": Date.now()
     },
     updateInfo = {};
 
   //将不为空的内容组成新的json字段
   for (var key in markInfo) {
-    if (markInfo[key] != "") {
+    if (markInfo[key] != "" || markInfo[key] == 0) {
       updateInfo[key] = markInfo[key]
     }
   }
@@ -188,7 +191,7 @@ router.put('/:id', function(req, res, next) {
 
       if (err) return next(err);
       if (results) {
-        if (results.token == req.body.token && Date.now() / 1000 <= results.delete_time) {
+        if (results.token == req.body.token && Date.now() <= results.delete_time) {
           //更新操作
           SqlOperation.update('marks', {
             _id: SqlOperation.ObjectID(req.params.id)
