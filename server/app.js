@@ -19,7 +19,7 @@ app.use(function(err, req, res, next) {
   if (err) {
     console.log("=====异常捕获====");
     console.error(err);
-    writeLog(process.cwd() + '\\log', err + '\r\n', function(err) {
+    writeLog(process.cwd() + '\\server\\log', err + '\r\n', function(err) {
       if (!err) {
         console.log("异常写入完成");
       } else {
