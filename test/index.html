@@ -27,15 +27,26 @@
   <div class="container-fluid full-height">
     <div class="row full-height">
       <div class="col-md-2 folders full-height">
+        <script type="text/ng-template" id="categoryTree">
+          <a href="javascript:;">
+            <span ng-bind="folder.title"></span>
+          </a>
+
+          <ul class="tree-folders">
+            <li ng-repeat="folder in folder.sub" ng-include="'categoryTree'" ng-click="showMarks($event,folder._id)">
+            </li>
+          </ul>
+        </script>
         <ul class="nav nav-pills nav-stacked ">
-          <li ng-repeat="folder in folders" ng-click="showMarks(folder._id)">
-            <a href="#">
-              <span ng-bind="folder.title"></span>
-              <!-- <span ng-click="showFolder(folder._id)" class="pull-right"> Edit</span> -->
-            </a>
+          <li ng-repeat="folder in folders" ng-include="'categoryTree'" ng-click="showMarks($event,folder._id)">
 
           </li>
         </ul>
+        <!-- <ul class="nav nav-pills nav-stacked ">
+          <li ng-repeat="folder in folders" ng-click="showMarks(folder._id)">
+
+          </li>
+        </ul> -->
       </div>
       <div class="col-md-3 marks full-height">
         <ul class="nav nav-pills nav-stacked ">
@@ -69,11 +80,12 @@
             <hr>
             <div class="system-intro">
               <h3>NetMarks，一款简单的网络书签管理应用。</h2>
-              <p>简洁明了的操作体验，用于在线同步网络书签。
-              <ul>
-                <li>账号注册规则：5-10位英文或数字的组合；</li>
-                <li>密码填写规则：6-15位英文或数字的组合；</li>
-              </ul></p>
+                <p>简洁明了的操作体验，用于在线同步网络书签。
+                  <ul>
+                    <li>账号注册规则：5-10位英文或数字的组合；</li>
+                    <li>密码填写规则：6-15位英文或数字的组合；</li>
+                  </ul>
+                </p>
             </div>
           </div>
           <div class="tab-pane" id="join_pane">
@@ -100,7 +112,7 @@
               <input type="text" name="tags" class="form-control" placeholder="标签">
               <input type="number" name="sort" class="form-control" placeholder="排序">
               <select class="form-control" name="folder_id">
-                <option ng-repeat="folder in folders" value={{folder._id}}>{{folder.title}}</option>
+                <option ng-repeat="folder in rootfolders" value={{folder._id}}>{{folder.title}}</option>
               </select>
 
               <button class="btn btn-lg btn-primary btn-block" type="submit">添 加</button>
@@ -113,9 +125,10 @@
 
               <input type="text" name="title" placeholder="标题" class="form-control">
               <textarea name="describe" placeholder="描述" class="form-control"></textarea>
-              <!-- <select class="form-control" name="folder_id" id="folder_select">
-                <option ng-repeat="folder in rootfolders" ng-model="folder._id">{{folder.title}}</option>
-              </select> -->
+              <select class="form-control" name="folder_id" id="folder_select">
+
+                <option ng-repeat="folder in rootfolders" value={{folder._id}}>{{folder.title}}</option>
+              </select>
 
               <button class="btn btn-lg btn-primary btn-block" type="submit">添 加</button>
 
