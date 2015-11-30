@@ -140,7 +140,8 @@ router.get('/', function(req, res, next) {
         if (results.token == req.query.token && Date.now() <= results.delete_time) {
           SqlOperation.sort('folders', getInfo, sortInfo, function(err, results) {
             if (err) return next(err);
-            if (results) {
+            //递归查询
+            if (results) {      
               config.folderRes.status4000.data = results;
               res.status(200).send(config.folderRes.status4000);
               config.folderRes.status4000.data = null;

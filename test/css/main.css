@@ -52,3 +52,12 @@ html, body, .full-height {
 .alert {border-radius: 0;background-color: #34495E;}
 .alert-info {color: #1ABC9C;}
 .alert-dismissible {color: #1ABC9C;}
+.tree-folders{
+  list-style: none;
+
+}
+.tree-folders a:hover,.tree-folders a:focus{
+  color: #1ABC9C;
+  background-color: #ECF0F1;
+  padding: 5px 10px;
+}
