@@ -1,4 +1,4 @@
-body {
+body, h1, h2, h3, h4, h5, h6, button, input, select, textarea {
   font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", "STHeitiSC-Light", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
 }
 .dropdown-menu {
@@ -12,12 +12,15 @@ body {
   border-radius: 0;
   color: #ECF0F1;
 }
-.nav-pills>li>a:hover,.nav-pills>li>a:focus {
+.nav-pills>li>a:hover, .nav-pills>li>a:focus {
   color: #1ABC9C;
 }
 .nav-tabs>li>a {
   border-radius: 0;
   border: 0;
+}
+.nav-stacked>li+li {
+  margin-top: 0;
 }
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
   background-color: #16A085;
@@ -35,7 +38,7 @@ body {
   background: none;
   box-shadow: none;
 }
-.form-control:focus{
+.form-control:focus {
   box-shadow: none;
 }
 .btn {

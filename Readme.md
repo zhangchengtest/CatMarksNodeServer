@@ -25,6 +25,7 @@
 | role | int | 权限 |
 | level | int | 等级 |
 | status | int | 状态 |
+| root_folder | ObjectId | 根文件夹 |
 
 ### 书签表 marks
 | 字段名 | 数据类型 | 描述 |
