@@ -137,7 +137,7 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
     //event.stopPropagation();
     $scope.showFolder(id);
     var obj = event.target;
-  $(obj).parents('.rootMenu').children('.subMenu').eq(0).toggle();
+    $(obj).parents('.rootMenu').children('.subMenu').eq(0).toggle();
     $.ajax({
       type: "get",
       url: Global.uri + "/folders/marks/" + id,
