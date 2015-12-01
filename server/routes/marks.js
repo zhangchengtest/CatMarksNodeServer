@@ -26,7 +26,8 @@ router.post('/', function(req, res, next) {
     "status": 1,
     "date": Date.now()
   };
-  console.log(SqlOperation.ObjectID(req.body.folder_id));
+  console.log("用户提交的书签信息");
+  console.log(markInfo);
   //检查提交的格式
   var check1 = validator.isMongoId(markInfo.user_id),
     check2 = validator.isUUID(req.body.token, 4);

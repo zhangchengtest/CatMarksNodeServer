@@ -128,6 +128,8 @@ router.post('/join', function(req, res, next) {
     level: 0,
     status: 1
   };
+  console.log("注册信息：");
+  console.log(joinInfo);
   //注册信息格式校验
   //用户名不能为空，5-10个数字或英文字符
   //密码不能为空，6-15个数字或英文字符
