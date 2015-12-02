@@ -64,7 +64,12 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
   $scope.showMarks = function(id) {
     //event.stopPropagation();
     $scope.showFolder(id);
+<<<<<<< HEAD
 
+=======
+    var obj = event.target;
+    $(obj).parents('.rootMenu').children('.subMenu').eq(0).toggle();
+>>>>>>> c6031a9ff3fe10dedbe336413b3d90a60ccb844b
     $.ajax({
       type: "get",
       url: Global.uri + "/folders/marks/" + id,
