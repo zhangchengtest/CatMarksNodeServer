@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters
 Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters
 Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters
@@ -6,3 +7,6 @@ Error: Argument passed in must be a single String of 12 bytes or a string of 24 
 Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters
 Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters
 Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters
+=======
+ReferenceError: markinfo is not defined
+>>>>>>> c6031a9ff3fe10dedbe336413b3d90a60ccb844b
