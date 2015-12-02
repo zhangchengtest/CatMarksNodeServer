@@ -51,7 +51,7 @@ $('#out_btn').click(function() {
     showCancelButton: true,
     confirmButtonColor: "#DD6B55",
     confirmButtonText: "退出",
-    cancelButtonText: "取消",
+    cancelButtonText: '取消',
     closeOnConfirm: false
   }, function() {
     $.removeCookie('user_id');
