@@ -41,7 +41,7 @@ html, body, .full-height {
   font-size: 16px;
 }
 .mark-uri {
-  display: block;
+  /*display: block;*/
 }
 .mark-li:hover .mark-describe {
   color: #1ABC9C;

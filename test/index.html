@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="css/bootstrap-theme.css">
   <link rel="stylesheet" href="js/vendor/sweet-alert/sweetalert.css">
   <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="fonts/font-awesome/css/font-awesome.min.css">
   <!-- <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script> -->
 </head>
 
@@ -41,9 +42,10 @@
           <li class="rootMenu" ng-repeat="folder in folders" ng-include="'categoryTree'" ng-click="showMarks($event,folder._id)">
           </li>
         </ul> -->
-        <ul class="nav nav-pills nav-stacked ">
+        <ul class="nav nav-pills nav-stacked">
           <li ng-repeat="folder in folders" ng-click="showMarks(folder._id)">
-            <a href="#">
+            <a href="#" title="编辑">
+              <i class="fa fa-folder"></i>
               <span ng-bind="folder.title"></span>
             </a>
           </li>
@@ -51,24 +53,27 @@
       </div>
       <div class="col-md-3 marks full-height">
         <ul class="nav nav-pills nav-stacked ">
-          <li ng-repeat="mark in marks" ng-click="showMark(mark._id)" class="mark-li">
-            <a href="#" class="mark-uri">
+          <li ng-repeat="mark in marks" class="mark-li">
+            <a href="#" ng-click="showMark(mark._id)" title="编辑">
+              <i class="fa fa-bookmark"></i>
               <span ng-bind="mark.title" class="mark-title"></span>
-              <span ng-bind="mark.uri" class="mark-uri"></span>
+            </a>
+            <a href="{{mark.uri}}" target="_blank" class="mark-uri" title="浏览器查看">
+              <span ng-bind="mark.uri" class="mark-uri"></span> <i class="fa fa-link"></i>
             </a>
           </li>
         </ul>
       </div>
       <div class="col-md-7 operates full-height">
         <ul class="nav nav-tabs">
-          <li id="marks_add"><a href="#marks_pane" data-toggle="tab">添加书签</a></li>
-          <li id="folders_add"><a href="#folders_pane" data-toggle="tab">添加文件夹</a></li>
-          <li id="mark_edit"><a href="#mark_edit_pane" data-toggle="tab">编辑书签</a></li>
-          <li id="folder_edit"><a href="#folder_edit_pane" data-toggle="tab">编辑文件夹</a></li>
+          <li id="marks_add"><a href="#marks_pane" data-toggle="tab">添加书签 <i class="fa fa-plus"></i></a></li>
+          <li id="folders_add"><a href="#folders_pane" data-toggle="tab">添加文件夹 <i class="fa fa-plus"></i></a></li>
+          <li id="mark_edit"><a href="#mark_edit_pane" data-toggle="tab">编辑书签 <i class="fa fa-pencil"></i></a></li>
+          <li id="folder_edit"><a href="#folder_edit_pane" data-toggle="tab">编辑文件夹 <i class="fa fa-pencil"></i></a></li>
 
           <li class="pull-right active" id="login_btn"><a data-toggle="tab" href="#login_pane">登录</a></li>
           <li class="pull-right" id="join_btn"><a data-toggle="tab" href="#join_pane">注册</a></li>
-          <li class="pull-right" id="out_btn"><a data-toggle="tab" href="#leave_pane">退出登录</a></li>
+          <li class="pull-right" id="out_btn"><a data-toggle="tab" href="#leave_pane"><i class="fa fa-sign-out"></i></a></li>
         </ul>
         <div class="tab-content">
           <div class="tab-pane active" id="login_pane">
@@ -164,9 +169,9 @@
       </div>
     </div>
   </div>
-  <a href="https://github.com/itwap">
+  <!-- <a href="https://github.com/itwap">
     <img style="position: absolute; top: 0; right: 0; border: 0;" src="fork_me_on_github.png" alt="Fork me on GitHub">
-  </a>
+  </a> -->
   <script src="js/vendor/jquery-1.11.2.min.js"></script>
   <script src="js/vendor/jquery.cookie.min.js"></script>
   <script src="js/vendor/jquery.validate.min.js"></script>
@@ -174,10 +179,15 @@
   <script src="js/vendor/bootstrap.min.js"></script>
   <script src="js/vendor/sweet-alert/sweetalert.min.js"></script>
   <script src="js/vendor/jquery.bootstrap-growl.min.js"></script>
+  <script src="js/vendor/html5sortable/jquery.sortable.min.js"></script>
   <script src="js/global.js"></script>
   <script src="js/main.js"></script>
   <script src="js/controller.js"></script>
-
+  <script>
+    window.onload = function() {
+      $('.nav').sortable();
+    }
+  </script>
 </body>
 
 </html>
