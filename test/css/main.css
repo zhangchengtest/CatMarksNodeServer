@@ -8,12 +8,15 @@ html, body, .full-height {
 }
 .folders {
   background-color: #34495E;
+  overflow: auto;
 }
 .marks {
   background-color: #1ABC9C;
+  overflow: auto;
 }
 .operates {
   background-color: #ECF0F1;
+  overflow: auto;
 }
 .operate-form, .system-intro {
   padding: 10px;
@@ -31,14 +34,14 @@ html, body, .full-height {
 .mark-li {
   border-bottom: 1px solid #ECF0F1;
   margin: 0;
+  word-wrap: break-word;
 }
 .mark-title {
   padding: 5px 0;
   font-size: 16px;
 }
-.mark-describe {
+.mark-uri {
   display: block;
-  margin: 5px 0;
 }
 .mark-li:hover .mark-describe {
   color: #1ABC9C;

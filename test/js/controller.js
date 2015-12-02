@@ -10,14 +10,15 @@ netMarks.filter('folderIdToTitle', function() {
   }
 });
 netMarks.controller('netMarksIndex', function($http, $scope) {
-  $scope.getFoldersAndMarks = function() {
-    //获取文件夹列表，含根目录
+  $scope.getFolders = function() {
+    //获取文件夹列表，不含根目录
     $.ajax({
       type: "get",
       url: Global.uri + "/folders",
       data: {
         user_id: $.cookie('user_id'),
-        token: $.cookie('token')
+        token: $.cookie('token'),
+        folder_id: $.cookie('folder_id')
       },
       async: false,
       error: function(request) {
@@ -27,88 +28,11 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
       success: function(data) {
         console.log("文件夹列表");
         console.log(data);
-        $scope.rootfolders = data.data;
-        Global.folders = data.data;
+        $scope.folders = data.data;
       }
     });
-
-    $scope.rootMenu = function(id, data) {
-      var newArray = new Array;
-      var rootId = id;
-      var nowArray = data;
-      var len = data.length;
-      for (var i = 0; i < len; i++) {
-        if (nowArray[i].folder_id == rootId) {
-          //nowArray[i].sub=new Array;
-          newArray.push(nowArray[i]);
-        }
-      }
-      $scope.subMenu(newArray, data);
-    };
-    $scope.subMenu = function(newArray, data) {
-
-      var len = newArray.length;
-      var len1 = data.length;
-
-
-      for (var i = 0; i < len; i++) {
-        newArray[i].sub = new Array;
-        for (var j = 0; j < len1; j++) {
-          if (newArray[i]._id == data[j].folder_id) {
-            newArray[i].sub.push(data[j]);
-          }
-        }
-      }
-
-      $scope.folders = newArray;
-
-
-
-    };
-    // $scope.subMenu = function(newArray, data) {
-    //   var times = 0;
-    //   var len = newArray.length;
-    //   var len1 = data.length;
-    //   for (var i = 0; i < len; i++) {
-    //     for (var j = 0; j < len1; j++) {
-    //       if (times < len1) {
-    //         if (newArray[i]._id == data[j].folder_id) {
-    //           newArray[i].sub = new Array;
-    //           newArray[i].sub.push(data[j]);
-    //           $scope.subMenu(newArray[i].sub, data);
-    //         } else {
-    //           times++;
-    //         }
-    //       } else {
-    //         console.log("新数组");
-    //         console.log(newArray);
-    //         $scope.folders = newArray
-    //       }
-    //     }
-    //   }
-    // };
-    $scope.getTreeFolders = function() {
-      //获取文件夹列表，含根目录
-      $.ajax({
-        type: "get",
-        url: Global.uri + "/folders",
-        data: {
-          user_id: $.cookie('user_id'),
-          token: $.cookie('token')
-        },
-        async: false,
-        error: function(request) {
-          console.error("文件夹列表获取错误!");
-          console.log(request);
-        },
-        success: function(data) {
-          console.log("所有文件夹列表");
-          console.log(data);
-          $scope.rootMenu($.cookie('folder_id'), data.data)
-        }
-      });
-    }
-    $scope.getTreeFolders();
+  };
+  $scope.getAllMarks = function() {
     //获取书签列表
     $.ajax({
       type: "get",
@@ -129,15 +53,18 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
 
       }
     });
-  }
+  };
+  $scope.getFoldersAndMarks = function() {
+    $scope.getFolders();
+    $scope.getAllMarks();
+  };
   if ($.cookie('user_id') && $.cookie('token')) {
     $scope.getFoldersAndMarks();
   };
-  $scope.showMarks = function(event, id) {
+  $scope.showMarks = function(id) {
     //event.stopPropagation();
     $scope.showFolder(id);
-    var obj = event.target;
-  $(obj).parents('.rootMenu').children('.subMenu').eq(0).toggle();
+
     $.ajax({
       type: "get",
       url: Global.uri + "/folders/marks/" + id,
@@ -226,7 +153,8 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
         url: Global.uri + "/folders",
         data: $.param({
           'token': $.cookie('token'),
-          'user_id': $.cookie('user_id')
+          'user_id': $.cookie('user_id'),
+          'folder_id': $.cookie('folder_id')
         }) + '&' + $("#folder_add_form").serialize(),
         error: function(request) {
           console.error("文件夹添加错误!");
@@ -234,11 +162,12 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
         },
         success: function(data) {
           Global.alert(data.message);
-          $scope.getTreeFolders();
+          $scope.getFolders();
         }
       })
     }
   });
+
   //添加书签
   $("#mark_add_form").validate({
     submitHandler: function() {
