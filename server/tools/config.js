@@ -83,6 +83,11 @@ var config = {
       code:1013 ,
       status: 500,
       message: "最近登录时间更新失败!"
+    },
+    status1014: {
+      code:1014 ,
+      status: 500,
+      message: "密码修改失败!"
     }
   },
   tokenRes: {

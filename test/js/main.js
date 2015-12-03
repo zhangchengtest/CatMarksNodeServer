@@ -6,8 +6,11 @@
     $('#marks_add').addClass("active");
     $('#marks_pane').addClass("active");
     $('#login_pane').removeClass('active');
+    //$("11111").appendTo($('#user_btn'));
+    $('#user_btn').html('<a data-toggle="tab" href="#user_edit_pane"><i class="fa fa-user"></i> '+$.cookie("username")+'</a>');
   } else {
     $('#out_btn').hide();
+    $('#user_btn').hide();
     $('#login_btn').addClass("active")
   }
 })();
@@ -35,6 +38,7 @@ $("#login_form").validate({
         if (data.code == 1000) {
           $.cookie('token', data.token);
           $.cookie('user_id', data.data._id);
+          $.cookie('username', data.data.username);
           $.cookie('folder_id', data.data.root);
           location.reload();
         }
@@ -57,6 +61,7 @@ $('#out_btn').click(function() {
     $.removeCookie('user_id');
     $.removeCookie('token');
     $.removeCookie('folder_id');
+    $.removeCookie('username')
     location.reload();
   });
 
@@ -76,7 +81,7 @@ $("#join_form").validate({
       },
       success: function(data) {
         //Global.alert(data.message);
-        if(data.code==1000){
+        if (data.code == 1000) {
           $.ajax({
             cache: true,
             type: "POST",
@@ -98,7 +103,7 @@ $("#join_form").validate({
               }
             }
           })
-        }else{
+        } else {
           Global.alert(data.message);
         }
       }
