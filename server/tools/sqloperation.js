@@ -92,6 +92,19 @@ SqlOperation.prototype.findMany = function(collectionName, queryString, callback
     })
   });
 };
+SqlOperation.prototype.distinct = function(collectionName, queryString, distinctString, callback) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      callback(err, null);
+    }
+    assert.equal(null, err);
+    console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
+    distinct(db, collectionName, queryString, distinctString, function(err, results) {
+      db.close();
+      callback(err, results);
+    })
+  });
+};
 SqlOperation.prototype.sort = function(collectionName, queryString, sortString, callback) {
   MongoClient.connect(url, function(err, db) {
     if (err) {
@@ -99,7 +112,7 @@ SqlOperation.prototype.sort = function(collectionName, queryString, sortString, 
     }
     assert.equal(null, err);
     console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
-    sort(db, collectionName, queryString,sortString, function(err, results) {
+    sort(db, collectionName, queryString, sortString, function(err, results) {
       db.close();
       callback(err, results);
     })
@@ -205,6 +218,19 @@ var findSpecify = function(db, collectionName, queryString, callback) {
       callback(err, returnResult);
     }
   });
+};
+var distinct = function(db, collectionName, queryString, distinctString, callback) {
+  findMany(db, collectionName, queryString, function(err, results) {
+    db.collection('temp_tags').remove({}, function(err, results1) {
+      db.createCollection('temp_tags', function(err, collection) {
+        collection.insert(results, function(err, ids) {
+          collection.distinct("tags", function(err, docs) {
+            callback(err, docs);
+          });
+        })
+      })
+    })
+  })
 };
 //sort
 var sort = function(db, collectionName, queryString, sortString, callback) {

@@ -10,6 +10,10 @@ html, body, .full-height {
   background-color: #34495E;
   overflow: auto;
 }
+.tags {
+  background-color: #2980B9;
+  overflow: auto;
+}
 .marks {
   background-color: #1ABC9C;
   overflow: auto;
@@ -26,6 +30,12 @@ html, body, .full-height {
 .operate-form input, .operate-form select, .operate-form textarea {
   margin: 10px 0;
   max-width: 100%;
+}
+.tag-list{
+  padding: 5px;
+}
+.tag-list>.label:hover{
+  cursor: pointer;
 }
 .form-title {
   margin-bottom: 20px;
@@ -49,12 +59,17 @@ html, body, .full-height {
 .system-intro h3 {
   text-align: center;
 }
-.bootstrap-growl {
-
+.bootstrap-growl {}
+.alert {
+  border-radius: 0;
+  background-color: #34495E;
 }
-.alert {border-radius: 0;background-color: #34495E;}
-.alert-info {color: #1ABC9C;}
-.alert-dismissible {color: #1ABC9C;}
-.subMenu{
+.alert-info {
+  color: #1ABC9C;
+}
+.alert-dismissible {
+  color: #1ABC9C;
+}
+.subMenu {
   display: none;
 }

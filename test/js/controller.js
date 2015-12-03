@@ -54,22 +54,68 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
       }
     });
   };
+  $scope.getAllTags = function() {
+    //获取书签列表
+    $.ajax({
+      type: "get",
+      url: Global.uri + "/tags",
+      data: {
+        user_id: $.cookie('user_id'),
+        token: $.cookie('token')
+      },
+      async: false,
+      error: function(request) {
+        console.error("标签列表获取错误!");
+        console.log(request);
+      },
+      success: function(data) {
+        console.log("标签列表");
+        console.log(data);
+        var tags = "";
+        $.each(data.data, function(key, value) {
+          tags += value;
+        });
+        $scope.tags = tags.split("#");
+        console.log("tags");
+        console.log($scope.tags);
+      }
+    });
+  };
+  $scope.showMarksByTag = function(tag) {
+    //获取tag书签列表
+    $.ajax({
+      type: "get",
+      url: Global.uri + "/tags/marks/" + tag,
+      data: {
+        user_id: $.cookie('user_id'),
+        token: $.cookie('token')
+      },
+      async: false,
+      error: function(request) {
+        console.error("query书签列表获取错误!");
+        console.log(request);
+      },
+      success: function(data) {
+        console.log("query书签列表");
+        console.log(data);
+        $scope.marks = data.data;
+      }
+    });
+  };
   $scope.getFoldersAndMarks = function() {
     $scope.getFolders();
     $scope.getAllMarks();
+    $scope.getAllTags();
   };
   if ($.cookie('user_id') && $.cookie('token')) {
     $scope.getFoldersAndMarks();
   };
+
   $scope.showMarks = function(id) {
     //event.stopPropagation();
     $scope.showFolder(id);
-<<<<<<< HEAD
-
-=======
     var obj = event.target;
     $(obj).parents('.rootMenu').children('.subMenu').eq(0).toggle();
->>>>>>> c6031a9ff3fe10dedbe336413b3d90a60ccb844b
     $.ajax({
       type: "get",
       url: Global.uri + "/folders/marks/" + id,

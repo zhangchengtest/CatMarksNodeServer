@@ -51,6 +51,11 @@
           </li>
         </ul>
       </div>
+      <div class="col-md-2 tags full-height">
+        <div class="tag-list">
+          <span class="label label-success" ng-repeat="tag in tags" ng-bind="tag" ng-click="showMarksByTag(tag)"></span>
+        </div>
+      </div>
       <div class="col-md-3 marks full-height">
         <ul class="nav nav-pills nav-stacked ">
           <li ng-repeat="mark in marks" class="mark-li">
@@ -64,7 +69,7 @@
           </li>
         </ul>
       </div>
-      <div class="col-md-7 operates full-height">
+      <div class="col-md-5 operates full-height">
         <ul class="nav nav-tabs">
           <li id="marks_add"><a href="#marks_pane" data-toggle="tab">添加书签 <i class="fa fa-plus"></i></a></li>
           <li id="folders_add"><a href="#folders_pane" data-toggle="tab">添加文件夹 <i class="fa fa-plus"></i></a></li>
