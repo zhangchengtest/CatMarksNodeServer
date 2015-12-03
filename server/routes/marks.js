@@ -123,7 +123,8 @@ router.get('/', function(req, res, next) {
   var check1 = validator.isMongoId(req.query.user_id),
     check2 = validator.isUUID(req.query.token, 4);
   var sortInfo = {
-    sort: 1
+    sort: 1,
+    date: -1
   };
   if (check1 && check2) {
     SqlOperation.findSpecify('tokens', {

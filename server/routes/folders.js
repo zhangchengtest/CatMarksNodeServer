@@ -141,7 +141,7 @@ router.get('/', function(req, res, next) {
           SqlOperation.sort('folders', getInfo, sortInfo, function(err, results) {
             if (err) return next(err);
             //递归查询
-            if (results) {      
+            if (results) {
               config.folderRes.status4000.data = results;
               res.status(200).send(config.folderRes.status4000);
               config.folderRes.status4000.data = null;
@@ -231,7 +231,8 @@ router.get('/marks/:id', function(req, res, next) {
   var user_id = SqlOperation.ObjectID(req.query.user_id);
   var folder_id = SqlOperation.ObjectID(req.params.id);
   var sortInfo = {
-    sort: 1
+    sort: 1,
+    date:-1
   };
   //格式校验
   var check1 = validator.isMongoId(req.query.user_id),

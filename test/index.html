@@ -53,7 +53,7 @@
       </div>
       <div class="col-md-2 tags full-height">
         <div class="tag-list">
-          <span class="label label-success" ng-repeat="tag in tags" ng-bind="tag" ng-click="showMarksByTag(tag)"></span>
+          <span class="label label-success" ng-repeat="tag in tags"  ng-click="showMarksByTag(tag)"><i class="fa fa-tag"></i> {{tag}}</span>
         </div>
       </div>
       <div class="col-md-3 marks full-height">
@@ -64,21 +64,36 @@
               <span ng-bind="mark.title" class="mark-title"></span>
             </a>
             <a href="{{mark.uri}}" target="_blank" class="mark-uri" title="浏览器查看">
-              <span ng-bind="mark.uri" class="mark-uri"></span> <i class="fa fa-link"></i>
+              <i class="fa fa-link"></i> <span ng-bind="mark.uri" class="mark-uri"></span> 
             </a>
           </li>
         </ul>
       </div>
       <div class="col-md-5 operates full-height">
         <ul class="nav nav-tabs">
-          <li id="marks_add"><a href="#marks_pane" data-toggle="tab">添加书签 <i class="fa fa-plus"></i></a></li>
-          <li id="folders_add"><a href="#folders_pane" data-toggle="tab">添加文件夹 <i class="fa fa-plus"></i></a></li>
-          <li id="mark_edit"><a href="#mark_edit_pane" data-toggle="tab">编辑书签 <i class="fa fa-pencil"></i></a></li>
-          <li id="folder_edit"><a href="#folder_edit_pane" data-toggle="tab">编辑文件夹 <i class="fa fa-pencil"></i></a></li>
+          <li id="marks_add">
+            <a href="#marks_pane" data-toggle="tab">
+              <i class="fa fa-plus"></i> <i class="fa fa-bookmark"></i>
+            </a>
+          </li>
+          <!-- <li id="mark_edit">
+            <a href="#mark_edit_pane" data-toggle="tab"> <i class="fa fa-pencil"></i> <i class="fa fa-bookmark"></i></a>
+          </li> -->
+          <li id="folders_add">
+            <a href="#folders_pane" data-toggle="tab">
+              <i class="fa fa-plus"></i> <i class="fa fa-folder"></i>
+            </a>
+          </li>
+
+          <!-- <li id="folder_edit">
+            <a href="#folder_edit_pane" data-toggle="tab"> <i class="fa fa-pencil"></i> <i class="fa fa-folder"></i></a>
+          </li> -->
 
           <li class="pull-right active" id="login_btn"><a data-toggle="tab" href="#login_pane">登录</a></li>
           <li class="pull-right" id="join_btn"><a data-toggle="tab" href="#join_pane">注册</a></li>
+
           <li class="pull-right" id="out_btn"><a data-toggle="tab" href="#leave_pane"><i class="fa fa-sign-out"></i></a></li>
+          <li class="pull-right" id="user_btn"><a data-toggle="tab" href="#user_edit_pane"><i class="fa fa-user"></i></a></li>
         </ul>
         <div class="tab-content">
           <div class="tab-pane active" id="login_pane">
@@ -144,8 +159,8 @@
               <textarea name="content" class="form-control" placeholder="内容" ng-model="mark.content"></textarea>
               <input type="text" name="tags" class="form-control" placeholder="标签" ng-model="mark.tags">
               <input type="number" name="sort" class="form-control" placeholder="排序" ng-model="mark.sort">
-              <input type="radio" ng-model="mark.status" name="status" value="1"> 可用
-              <input type="radio" ng-model="mark.status" name="status" value="0"> 不可用
+              <!-- <input type="radio" ng-model="mark.status" name="status" value="1"> 可用
+              <input type="radio" ng-model="mark.status" name="status" value="0"> 不可用 -->
               <!-- <input type="radio" name="status" value="1">可用
               <input type="radio" name="status" value="0">不可用 -->
               <input type="text" name="date" class="form-control" placeholder="创建日期" ng-model="mark.date | date:'yyyy-MM-dd'" disabled="">
@@ -162,12 +177,56 @@
               <input type="text" name="title" ng-model="folder.title" class="form-control" placeholder="标题">
               <textarea name="describe" ng-model="folder.describe" class="form-control" placeholder="描述"></textarea>
               <input type="number" name="sort" ng-model="folder.sort" class="form-control" placeholder="排序">
-              <input type="radio" ng-model="folder.status" name="status" value="1"> 可用
-              <input type="radio" ng-model="folder.status" name="status" value="0"> 不可用
+              <!-- <input type="radio" ng-model="folder.status" name="status" value="1"> 可用
+              <input type="radio" ng-model="folder.status" name="status" value="0"> 不可用 -->
               <!-- <select class="form-control" name="folder_id" ng-model="folder.folder_id">
                 <option ng-repeat="folder in rootfolders">{{folder._id}}</option>
               </select> -->
               <button class="btn btn-lg btn-primary btn-block" type="submit">编 辑</button>
+            </form>
+          </div>
+          <div class="tab-pane" id="user_edit_pane">
+            <form id="user_edit_form" class="operate-form">
+              <h2 class="form-title">个人信息</h2>
+              <table class="operate-table">
+                <tr>
+                  <td>用户名：</td>
+                  <td>
+                    <input type="text" class="form-control" disabled="" ng-model="user.username">
+                  </td>
+                </tr>
+                <tr>
+                  <td>邮箱：</td>
+                  <td>
+                    <input type="text" class="form-control" disabled="" ng-model="user.email">
+                  </td>
+                </tr>
+                <tr>
+                  <td>注册时间：</td>
+                  <td>
+                    <input type="text" class="form-control" disabled="" ng-model="user.register_time | date:'yyyy-MM-dd'">
+                  </td>
+                </tr>
+                <tr>
+                  <td>最近登录：</td>
+                  <td>
+                    <input type="text" class="form-control" disabled="" ng-model="user.recently_time | date:'yyyy-MM-dd'">
+                  </td>
+                </tr>
+                <tr>
+                  <td>设置新密码：</td>
+                  <td>
+                    <input type="password" class="form-control" name="password" id="password">
+                  </td>
+                </tr>
+                <tr>
+                  <td>重复新密码：</td>
+                  <td>
+                    <input type="password" name="confirm_password" class="form-control">
+                  </td>
+                </tr>
+              </table>
+              <button class="btn btn-lg btn-primary btn-block" type="submit">修改密码</button>
             </form>
           </div>
         </div>

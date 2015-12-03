@@ -41,6 +41,9 @@ html, body, .full-height {
   margin-bottom: 20px;
   text-align: center;
 }
+.operate-table{
+  width: 100%;
+}
 .mark-li {
   border-bottom: 1px solid #ECF0F1;
   margin: 0;

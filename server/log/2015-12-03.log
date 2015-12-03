@@ -236,3 +236,34 @@ Error: Argument passed in must be a single String of 12 bytes or a string of 24 
 1进程退出
 2进程退出
 3进程退出
+TypeError: Cannot read property 'status1010' of undefined
+TypeError: Cannot read property 'status1010' of undefined
+2进程退出
+3进程退出
+6进程退出
+5进程退出
+3进程退出
+1进程退出
+2进程退出
+6进程退出
+5进程退出
+8进程退出
+7进程退出
+10进程退出
+2进程退出
+3进程退出
+4进程退出
+2进程退出
+3进程退出
+3进程退出
+2进程退出
+4进程退出
+5进程退出
+2进程退出
+3进程退出
+3进程退出
+4进程退出
+3进程退出
+4进程退出
+2进程退出
+6进程退出

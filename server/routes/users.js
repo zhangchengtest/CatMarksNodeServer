@@ -312,5 +312,45 @@ router.get('/:id', function(req, res, next) {
     }
   });
 });
+//更新个人信息
+router.put('/:id', function(req, res, next) {
 
+  //格式校验
+  var check = validator.isMongoId(req.params.id) && validator.isUUID(req.body.token, 4) && validator.isLength(req.body.password, 6, 15);
+  if (check) {
+    var user_id = SqlOperation.ObjectID(req.params.id);
+    SqlOperation.findSpecify('tokens', {
+      user_id: user_id
+    }, function(err, results) {
+      if (err) return next(err);
+      if (results) {
+        if (results.token == req.body.token && Date.now() <= results.delete_time) {
+          //更新操作
+          SqlOperation.update('users', {
+            _id: user_id
+          }, {
+            "$set": {
+              password: md5(req.body.password)
+            }
+          }, function(err, results) {
+            if (err) return next(err);
+            if (results.result.ok == 1) {
+              res.status(200).send(config.usersRes.status1000);
+            } else {
+              res.status(200).send(config.usersRes.status1014);
+            }
+          })
+        } else {
+          //token无效
+          res.status(200).send(config.tokenRes.status2003);
+        }
+      } else {
+        //token不存在
+        res.status(200).send(config.tokenRes.status2002);
+      }
+    });
+  } else {
+    res.status(200).send(config.usersRes.status1010);
+  }
+});
 module.exports = router;

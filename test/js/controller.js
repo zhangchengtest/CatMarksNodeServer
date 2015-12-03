@@ -32,6 +32,26 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
       }
     });
   };
+  $scope.getUserInfo = function() {
+    //获取文件夹列表，不含根目录
+    $.ajax({
+      type: "get",
+      url: Global.uri + "/users/" + $.cookie("user_id"),
+      data: {
+        token: $.cookie('token'),
+      },
+      async: false,
+      error: function(request) {
+        console.error("user获取错误!");
+        console.log(request);
+      },
+      success: function(data) {
+        console.log("userinfo");
+        console.log(data);
+        $scope.user = data.data;
+      }
+    });
+  };
   $scope.getAllMarks = function() {
     //获取书签列表
     $.ajax({
@@ -102,20 +122,18 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
       }
     });
   };
-  $scope.getFoldersAndMarks = function() {
+  $scope.getInitInfo = function() {
     $scope.getFolders();
     $scope.getAllMarks();
     $scope.getAllTags();
+    $scope.getUserInfo()
   };
   if ($.cookie('user_id') && $.cookie('token')) {
-    $scope.getFoldersAndMarks();
+    $scope.getInitInfo();
   };
 
   $scope.showMarks = function(id) {
-    //event.stopPropagation();
-    $scope.showFolder(id);
-    var obj = event.target;
-    $(obj).parents('.rootMenu').children('.subMenu').eq(0).toggle();
+
     $.ajax({
       type: "get",
       url: Global.uri + "/folders/marks/" + id,
@@ -132,18 +150,21 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
         console.log("书签列表");
         console.log(data);
         $scope.marks = data.data;
+        $scope.showFolder(id);
 
       }
     });
   };
   $scope.showMark = function(id) {
     var markId = $('#mark_id').val();
+    $('#mark_edit_pane').addClass('active');
+    $('.operates>ul>li').removeClass('active');
+    $('#mark_edit_pane').siblings().removeClass('active');
     if (id != markId) {
       //document.getElementById("mark_edit_form").reset();
-      $('#mark_edit').siblings().removeClass('active');
-      $('#mark_edit_pane').siblings().removeClass('active');
-      $('#mark_edit').addClass('active');
-      $('#mark_edit_pane').addClass('active');
+
+      //$('#mark_edit').addClass('active');
+
       $.ajax({
         type: "get",
         url: Global.uri + "/marks/" + id,
@@ -168,12 +189,14 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
   };
   $scope.showFolder = function(id) {
     var folderId = $('#folder_id').val();
+    $('#folder_edit_pane').addClass('active');
+    $('.operates>ul>li').removeClass('active');
+    $('#folder_edit_pane').siblings().removeClass('active');
     if (id != folderId) {
       //document.getElementById("folder_edit_form").reset();
-      $('#folder_edit').siblings().removeClass('active');
-      $('#folder_edit_pane').siblings().removeClass('active');
-      $('#folder_edit').addClass('active');
-      $('#folder_edit_pane').addClass('active');
+
+      //$('#folder_edit').addClass('active');
+
       $.ajax({
         type: "get",
         url: Global.uri + "/folders/" + id,
@@ -275,6 +298,36 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
         }) + '&' + $("#folder_edit_form").serialize(),
         error: function(request) {
           console.error("文件夹编辑错误!");
+          console.log(request);
+        },
+        success: function(data) {
+          Global.alert(data.message);
+        }
+      })
+    }
+  });
+  //编辑用户信息
+  $("#user_edit_form").validate({
+    rules: {
+      password: {
+        required: true,
+        minlength: 6,
+        maxlength: 15
+      },
+      confirm_password: {
+        equalTo: "#password"
+      }
+    },
+    submitHandler: function() {
+      $.ajax({
+        type: "PUT",
+        url: Global.uri + "/users/" + $.cookie('user_id'),
+        async: false,
+        data: $.param({
+          'token': $.cookie('token')
+        }) + '&' + $("#user_edit_form").serialize(),
+        error: function(request) {
+          console.error("userinfo编辑错误!");
           console.log(request);
         },
         success: function(data) {
