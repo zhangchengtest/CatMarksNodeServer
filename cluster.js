@@ -42,7 +42,7 @@ if (cluster.isMaster) {
             //   console.log(results);
             // })
         }
-        writeLog(process.cwd() + '\\log', worker.id + '进程退出' + '\r\n', function(err) {
+        writeLog(process.cwd() + '\\server\\log', worker.id + '进程退出' + '\r\n', function(err) {
             if (!err) {
                 console.log("进程退出异常写入完成");
             } else {

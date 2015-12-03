@@ -21,6 +21,7 @@ router.post('/', function(req, res, next) {
     "uri": req.body.uri,
     "describe": validator.escape(req.body.describe),
     "content": req.body.content,
+    //"tags": req.body.tags.split("#"),
     "tags": req.body.tags,
     "sort": Number(req.body.sort),
     "status": 1,
@@ -167,7 +168,7 @@ router.put('/:id', function(req, res, next) {
       "uri": req.body.uri,
       "describe": validator.escape(req.body.describe),
       "content": req.body.content,
-      "tag": req.body.tag,
+      "tags": req.body.tags,
       "sort": Number(req.body.sort),
       "status": Number(req.body.status),
       "date": Date.now()
@@ -180,6 +181,8 @@ router.put('/:id', function(req, res, next) {
       updateInfo[key] = markInfo[key]
     }
   }
+  console.log("书签更新");
+  console.log(updateInfo);
   var user_id = SqlOperation.ObjectID(req.body.user_id);
   //格式校验
   var check1 = validator.isMongoId(req.body.user_id),

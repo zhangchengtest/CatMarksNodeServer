@@ -1,6 +1,7 @@
 var express = require('express'),
   users = require('./routes/users.js'),
   marks = require('./routes/marks.js'),
+  tags = require('./routes/tags.js'),
   folders = require('./routes/folders.js'),
   config = require('./tools/config.js'),
   writeLog = require('./tools/log.js');
@@ -14,6 +15,7 @@ app.use(function(req, res, next) {
 });
 app.use('/users', users);
 app.use('/marks', marks);
+app.use('/tags', tags);
 app.use('/folders', folders);
 app.use(function(err, req, res, next) {
   if (err) {
