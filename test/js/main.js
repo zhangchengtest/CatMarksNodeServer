@@ -3,12 +3,14 @@
   if ($.cookie('token') && $.cookie('user_id')) {
     $('#join_btn').hide();
     $('#login_btn').hide();
-    $('#marks_add').addClass("active");
-    $('#marks_pane').addClass("active");
+    $('#folders_add').addClass("active");
+    $('#folders_pane').addClass("active");
     $('#login_pane').removeClass('active');
     //$("11111").appendTo($('#user_btn'));
     $('#user_btn').html('<a data-toggle="tab" href="#user_edit_pane"><i class="fa fa-user"></i> '+$.cookie("username")+'</a>');
   } else {
+    $('#marks_add').hide();
+    $('#folders_add').hide();
     $('#out_btn').hide();
     $('#user_btn').hide();
     $('#login_btn').addClass("active")

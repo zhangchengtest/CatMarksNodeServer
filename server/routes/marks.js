@@ -134,7 +134,7 @@ router.get('/', function(req, res, next) {
       if (results) {
         if (results.token == req.query.token && Date.now() <= results.delete_time) {
           SqlOperation.sort('marks', {
-            user_id: user_id
+            user_id: user_id,status:1
           }, sortInfo, function(err, results) {
             if (err) return next(err);
             if (results) {

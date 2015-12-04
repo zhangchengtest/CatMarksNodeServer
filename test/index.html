@@ -28,67 +28,63 @@
   <div class="container-fluid full-height">
     <div class="row full-height">
       <div class="col-md-2 folders full-height">
-        <!-- <script type="text/ng-template" id="categoryTree">
-          <a href="javascript:;">
-            <span ng-bind="folder.title"></span>
-          </a>
-
-            <ul class="nav nav-pills nav-stacked subMenu">
-            <li ng-repeat="folder in folder.sub" ng-include="'categoryTree'" ng-click="showMarks($event,folder._id)">
-            </li>
-          </ul>
-        </script> -->
-        <!-- <ul class="nav nav-pills nav-stacked ">
-          <li class="rootMenu" ng-repeat="folder in folders" ng-include="'categoryTree'" ng-click="showMarks($event,folder._id)">
-          </li>
-        </ul> -->
         <ul class="nav nav-pills nav-stacked">
-          <li ng-repeat="folder in folders" ng-click="showMarks(folder._id)">
-            <a href="#" title="编辑">
+          <li ng-repeat="folder in folders" ng-click="showMarks(folder._id)" class="mark-li">
+            <a href="#" title="编辑" class="item-folder-left">
               <i class="fa fa-folder"></i>
               <span ng-bind="folder.title"></span>
             </a>
+            <div class="item-folder-right" ng-click="deleteFolder($event,folder._id)">
+              <a href="#">
+                <i class="fa fa-trash"></i>
+              </a>
+            </div>
           </li>
         </ul>
       </div>
       <div class="col-md-2 tags full-height">
         <div class="tag-list">
-          <span class="label label-success" ng-repeat="tag in tags"  ng-click="showMarksByTag(tag)"><i class="fa fa-tag"></i> {{tag}}</span>
+          <span class="label label-success" ng-repeat="tag in tags" ng-click="showMarksByTag(tag)"><i class="fa fa-tag"></i> {{tag}}</span>
         </div>
       </div>
       <div class="col-md-3 marks full-height">
         <ul class="nav nav-pills nav-stacked ">
           <li ng-repeat="mark in marks" class="mark-li">
-            <a href="#" ng-click="showMark(mark._id)" title="编辑">
+            <a href="#" ng-click="showMark(mark._id)" title="编辑" class="item-mark-left">
               <i class="fa fa-bookmark"></i>
               <span ng-bind="mark.title" class="mark-title"></span>
+              <br>
+              <!-- <i class="fa fa-link"></i>
+              <span ng-bind="mark.uri" class="mark-uri"></span> -->
             </a>
-            <a href="{{mark.uri}}" target="_blank" class="mark-uri" title="浏览器查看">
-              <i class="fa fa-link"></i> <span ng-bind="mark.uri" class="mark-uri"></span> 
-            </a>
+            <div class="item-mark-right">
+              <a href="{{mark.uri}}" target="_blank">
+                <i class="fa fa-link"></i>
+              </a>
+
+            </div>
+
+            <div class="item-mark-right" ng-click="deleteMark($event,mark._id)">
+              <a href="#">
+                <i class="fa fa-trash"></i>
+              </a>
+            </div>
+
           </li>
         </ul>
       </div>
       <div class="col-md-5 operates full-height">
         <ul class="nav nav-tabs">
-          <li id="marks_add">
-            <a href="#marks_pane" data-toggle="tab">
-              <i class="fa fa-plus"></i> <i class="fa fa-bookmark"></i>
-            </a>
-          </li>
-          <!-- <li id="mark_edit">
-            <a href="#mark_edit_pane" data-toggle="tab"> <i class="fa fa-pencil"></i> <i class="fa fa-bookmark"></i></a>
-          </li> -->
           <li id="folders_add">
             <a href="#folders_pane" data-toggle="tab">
               <i class="fa fa-plus"></i> <i class="fa fa-folder"></i>
             </a>
           </li>
-
-          <!-- <li id="folder_edit">
-            <a href="#folder_edit_pane" data-toggle="tab"> <i class="fa fa-pencil"></i> <i class="fa fa-folder"></i></a>
-          </li> -->
-
+          <li id="marks_add">
+            <a href="#marks_pane" data-toggle="tab">
+              <i class="fa fa-plus"></i> <i class="fa fa-bookmark"></i>
+            </a>
+          </li>
           <li class="pull-right active" id="login_btn"><a data-toggle="tab" href="#login_pane">登录</a></li>
           <li class="pull-right" id="join_btn"><a data-toggle="tab" href="#join_pane">注册</a></li>
 
@@ -130,7 +126,7 @@
               <input type="text" name="uri" class="form-control" placeholder="链接">
               <textarea name="describe" class="form-control" placeholder="描述"></textarea>
               <textarea name="content" class="form-control" placeholder="内容"></textarea>
-              <input type="text" name="tags" class="form-control" placeholder="标签">
+              <input type="text" name="tags" class="form-control" placeholder="标签以#号分隔，例如：#百度#腾讯#阿里">
               <input type="number" name="sort" class="form-control" placeholder="排序">
               <select class="form-control" name="folder_id">
                 <option ng-repeat="folder in folders" value={{folder._id}}>{{folder.title}}</option>
@@ -157,7 +153,7 @@
               <input type="text" name="uri" class="form-control" placeholder="链接" ng-model="mark.uri">
               <textarea name="describe" class="form-control" placeholder="描述" ng-model="mark.describe"></textarea>
               <textarea name="content" class="form-control" placeholder="内容" ng-model="mark.content"></textarea>
-              <input type="text" name="tags" class="form-control" placeholder="标签" ng-model="mark.tags">
+              <input type="text" name="tags" class="form-control" placeholder="标签以#号分隔，例如：#百度#腾讯#阿里" ng-model="mark.tags">
               <input type="number" name="sort" class="form-control" placeholder="排序" ng-model="mark.sort">
               <!-- <input type="radio" ng-model="mark.status" name="status" value="1"> 可用
               <input type="radio" ng-model="mark.status" name="status" value="0"> 不可用 -->
