@@ -93,10 +93,18 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
         console.log(data);
         var tags = "";
         $.each(data.data, function(key, value) {
-          tags += value;
+          if (value) {
+            tags += value;
+          }
         });
-        $scope.tags = tags.split("#");
-        console.log("tags");
+        var uniqueArr = [];
+        var taglist = new Array;
+        taglist = tags.split("#");
+        $.each(taglist, function(i, el) {
+          if ($.inArray(el, uniqueArr) === -1 && el) uniqueArr.push(el);
+        });
+        $scope.tags = uniqueArr
+        console.log("tags:" + tags);
         console.log($scope.tags);
       }
     });
@@ -306,6 +314,71 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
       })
     }
   });
+  $scope.deleteMark = function(event, id) {
+    var obj = event.target;
+
+    swal({
+      title: "确定退出吗？",
+      text: "",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "删除",
+      cancelButtonText: '取消',
+      closeOnConfirm: false
+    }, function() {
+      $.ajax({
+        type: "PUT",
+        url: Global.uri + "/marks/" + id,
+        data: {
+          user_id: $.cookie('user_id'),
+          token: $.cookie('token'),
+          status: 0
+        },
+        async: false,
+        error: function(request) {
+          console.error("书签删除错误!");
+          console.log(request);
+        },
+        success: function(data) {
+          $(obj).parents('.mark-li')[0].remove();
+          swal("已删除!",data.message, "success");
+        }
+      });
+    });
+  };
+  $scope.deleteFolder = function(event, id) {
+    var obj = event.target;
+    swal({
+      title: "确定退出吗？",
+      text: "",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "删除",
+      cancelButtonText: '取消',
+      closeOnConfirm: false
+    }, function() {
+      $.ajax({
+        type: "PUT",
+        url: Global.uri + "/folders/" + id,
+        data: {
+          user_id: $.cookie('user_id'),
+          token: $.cookie('token'),
+          status: 0
+        },
+        async: false,
+        error: function(request) {
+          console.error("文件夹删除错误!");
+          console.log(request);
+        },
+        success: function(data) {
+          $(obj).parents('.mark-li')[0].remove();
+          swal("已删除!",data.message, "success");
+        }
+      });
+    });
+  };
   //编辑用户信息
   $("#user_edit_form").validate({
     rules: {
