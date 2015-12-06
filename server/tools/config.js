@@ -1,7 +1,7 @@
 var config = {
   db: {
-    uri: "mongodb://localhost",
-    port: "27017"
+    uri: "mongodb://mark:mark@localhost:27017/catmarks",
+    uri_easy: "mongodb://localhost:27017/catmarks"
   },
   serverRes:{
     status5000:{

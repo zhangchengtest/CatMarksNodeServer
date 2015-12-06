@@ -7,15 +7,16 @@ body, h1, h2, h3, h4, h5, h6, button, input, select, textarea {
 .col-md-2, .col-md-3, .col-md-5, .row, .container-fluid {
   padding: 0;
   margin: 0;
+  max-width: 100%;
 }
-.label{
+.label {
   padding: 10px;
   display: inline-block;
-  margin-top:5px;
+  margin-top: 5px;
   margin-right: 5px;
   border-radius: 0;
 }
-.label-success{
+.label-success {
   background-color: #1ABC9C;
 }
 .nav-pills>li>a {
@@ -41,7 +42,7 @@ body, h1, h2, h3, h4, h5, h6, button, input, select, textarea {
 .navbar {
   margin: 0;
 }
-.form-control,.form-control[disabled] {
+.form-control, .form-control[disabled] {
   border-radius: 0;
   border: none;
   border-bottom: 1px solid #95A5A6;
@@ -56,4 +57,14 @@ body, h1, h2, h3, h4, h5, h6, button, input, select, textarea {
 }
 a {
   color: #16A085;
+}
+.modal-content {
+  border-radius: 0;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  word-wrap: break-word;
+}
+.modal-content img {
+  max-width: 100%;
 }

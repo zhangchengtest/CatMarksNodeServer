@@ -8,7 +8,12 @@ netMarks.filter('folderIdToTitle', function() {
     });
     return input
   }
-});
+})
+.filter('trustHTML', function ($sce) {
+    return function (input) {
+        return $sce.trustAsHtml(input);
+    }
+})
 netMarks.controller('netMarksIndex', function($http, $scope) {
   $scope.getFolders = function() {
     //获取文件夹列表，不含根目录
@@ -225,6 +230,10 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
       });
     }
   };
+  // $scope.showLayer=function(){
+  //   //Global.layer(content);
+  //   $("#demo01").animatedModal();
+  // };
   //添加文件夹
   $("#folder_add_form").validate({
     submitHandler: function() {
@@ -409,4 +418,5 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
       })
     }
   });
+
 });
