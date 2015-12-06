@@ -28,7 +28,7 @@
         <![endif]-->
   <div class="container-fluid full-height">
     <div class="row full-height">
-      <div class="col-md-2 folders full-height">
+      <div class="col-md-2 folders ">
         <ul class="nav nav-pills nav-stacked">
           <li ng-repeat="folder in folders" ng-click="showMarks(folder._id)" class="mark-li">
             <a href="#" title="编辑" class="item-folder-left">
@@ -43,12 +43,12 @@
           </li>
         </ul>
       </div>
-      <div class="col-md-2 tags full-height">
+      <div class="col-md-2 tags">
         <div class="tag-list">
           <span class="label label-success" ng-repeat="tag in tags" ng-click="showMarksByTag(tag)"><i class="fa fa-tag"></i> {{tag}}</span>
         </div>
       </div>
-      <div class="col-md-3 marks full-height">
+      <div class="col-md-3 marks">
         <ul class="nav nav-pills nav-stacked ">
           <li ng-repeat="mark in marks" class="mark-li">
             <a href="#" ng-click="showMark(mark._id)" title="编辑" class="item-mark-left">

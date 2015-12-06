@@ -101,6 +101,7 @@ $("#join_form").validate({
                 $.cookie('token', data.token);
                 $.cookie('user_id', data.data._id);
                 $.cookie('folder_id', data.data.root);
+                $.cookie('username', data.data.username);
                 location.reload();
               }
             }

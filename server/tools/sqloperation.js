@@ -4,9 +4,8 @@ var MongoClient = require('mongodb').MongoClient,
   mongodb = require('mongodb'),
   config = require('./config.js');
 
-//connetction url
-var url = config.db.uri + ':' + config.db.port;
-//exports
+var url = config.db.uri_easy;
+
 var SqlOperation = function() {};
 module.exports = SqlOperation;
 

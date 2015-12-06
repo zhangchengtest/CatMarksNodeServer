@@ -1,8 +1,9 @@
 var express = require('express'),
   bodyParser = require('body-parser'),
   validator = require('validator'),
-  SqlOperation = require('../tools/sqloperation.js'),
-  config = require('../tools/config.js');
+  SqlOperation = require('../tools/sqloperation1.js'),
+  config = require('../tools/config.js'),
+  read = require('node-readability');
 
 var router = express.Router(),
   SqlOperation = new SqlOperation();
@@ -20,7 +21,7 @@ router.post('/', function(req, res, next) {
     "title": validator.escape(req.body.title),
     "uri": req.body.uri,
     "describe": validator.escape(req.body.describe),
-    "content": req.body.content,
+    //"content": req.body.content,
     //"tags": req.body.tags.split("#"),
     "tags": req.body.tags,
     "sort": Number(req.body.sort),
@@ -30,10 +31,9 @@ router.post('/', function(req, res, next) {
   console.log("用户提交的书签信息");
   console.log(markInfo);
   //检查提交的格式
-  var check1 = validator.isMongoId(markInfo.user_id),
-    check2 = validator.isUUID(req.body.token, 4);
+  var check = validator.isMongoId(markInfo.user_id) && validator.isUUID(req.body.token, 4);
   //判断token是否有效并且属于该用户
-  if (check1 && check2 && req.body.title != "") {
+  if (check && req.body.title != "") {
     SqlOperation.findSpecify('tokens', {
       user_id: markInfo.user_id
     }, function(err, results) {
@@ -54,6 +54,22 @@ router.post('/', function(req, res, next) {
           SqlOperation.insert('marks', markInfo, function(err, results) {
             if (err) return next(err);
             if (results.result.ok == 1) {
+
+              //抓取内容填充
+              read(req.body.uri, function(err, article, meta) {
+                if (err) return next(err);
+                //更新操作
+                SqlOperation.update('marks', {
+                  _id: SqlOperation.ObjectID(results.ops[0]._id)
+                }, {
+                  "$set": {
+                    content: article.content
+                  }
+                }, function(err, results) {
+                  article.close();
+                  if (err) return next(err);
+                })
+              });
               res.status(200).send(config.markRes.status3000);
             } else {
               res.status(200).send(config.serverRes.status5001);
@@ -134,7 +150,8 @@ router.get('/', function(req, res, next) {
       if (results) {
         if (results.token == req.query.token && Date.now() <= results.delete_time) {
           SqlOperation.sort('marks', {
-            user_id: user_id,status:1
+            user_id: user_id,
+            status: 1
           }, sortInfo, function(err, results) {
             if (err) return next(err);
             if (results) {
@@ -168,7 +185,7 @@ router.put('/:id', function(req, res, next) {
       "title": validator.escape(req.body.title),
       "uri": req.body.uri,
       "describe": validator.escape(req.body.describe),
-      "content": req.body.content,
+      //"content": req.body.content,
       "tags": req.body.tags,
       "sort": Number(req.body.sort),
       "status": Number(req.body.status),
