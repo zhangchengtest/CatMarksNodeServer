@@ -12,9 +12,9 @@ SqlOperation.prototype.ObjectID = function(id) {
   return mongodb.ObjectID(id);
 }
 MongoClient.connect(url, function(err, db) {
-  if (err) {
-    callback(err, null);
-  }
+  // if (err) {
+  //   callback(err, null);
+  // }
   //console.log("\033[36m" + "1 Connected correctly to server" + "/\033[39m");
   // SqlOperation.prototype.insert = function(collectionName, insertString, callback) {
   //   insert(db, collectionName, insertString, function(err, results) {
@@ -68,9 +68,9 @@ MongoClient.connect(url, function(err, db) {
   };
 });
 MongoClient.connect(url, function(err, db) {
-  if (err) {
-    callback(err, null);
-  }
+  // if (err) {
+  //   callback(err, null);
+  // }
   //console.log("\033[36m" + "2Connected correctly to server" + "/\033[39m");
   SqlOperation.prototype.insert = function(collectionName, insertString, callback) {
     insert(db, collectionName, insertString, function(err, results) {
