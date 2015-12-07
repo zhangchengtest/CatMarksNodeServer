@@ -334,7 +334,7 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
     var obj = event.target;
 
     swal({
-      title: "确定退出吗？",
+      title: "确定删除该书签吗？",
       text: "",
       type: "warning",
       showCancelButton: true,
@@ -366,7 +366,7 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
   $scope.deleteFolder = function(event, id) {
     var obj = event.target;
     swal({
-      title: "确定退出吗？",
+      title: "确定删除该文件夹吗？",
       text: "",
       type: "warning",
       showCancelButton: true,
