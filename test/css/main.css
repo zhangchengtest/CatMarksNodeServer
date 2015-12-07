@@ -130,6 +130,16 @@ html, body, .full-height {
 .system-intro h3 {
   text-align: center;
 }
+.fixed-nav {
+  position: fixed;
+  width: inherit;
+  top: 0;
+  right: 0;
+  background-color: #ECF0F1;
+}
+.operates-content {
+  margin-top: 20px;
+}
 .bootstrap-growl {}
 .alert {
   border-radius: 0;
@@ -152,12 +162,12 @@ html, body, .full-height {
   font-size: 36px;
   color: #1ABC9C;
 }
-#ajax_wait{
+#ajax_wait {
   position: fixed;
-  top:50%;
+  top: 50%;
   left: 50%;
   z-index: 1;
-  width:50px;
+  width: 50px;
   text-align: center;
   margin-left: -25px;
 }

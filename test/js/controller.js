@@ -33,6 +33,7 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
       success: function(data) {
         console.log("文件夹列表");
         console.log(data);
+        Global.alert(data.message);
         $scope.folders = data.data;
       }
     });
@@ -53,6 +54,7 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
       success: function(data) {
         console.log("userinfo");
         console.log(data);
+        Global.alert(data.message);
         $scope.user = data.data;
       }
     });
@@ -74,8 +76,8 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
       success: function(data) {
         console.log("书签列表");
         console.log(data);
+        Global.alert(data.message);
         $scope.marks = data.data;
-
       }
     });
   };
@@ -96,6 +98,7 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
       success: function(data) {
         console.log("标签列表");
         console.log(data);
+        Global.alert(data.message);
         var tags = "";
         $.each(data.data, function(key, value) {
           if (value) {
@@ -131,6 +134,7 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
       success: function(data) {
         console.log("query书签列表");
         console.log(data);
+        Global.alert(data.message);
         $scope.marks = data.data;
       }
     });
@@ -162,6 +166,7 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
       success: function(data) {
         console.log("书签列表");
         console.log(data);
+        Global.alert(data.message);
         $scope.marks = data.data;
         $scope.showFolder(id);
 
@@ -192,6 +197,7 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
         },
         success: function(data) {
           console.log("书签详情");
+          Global.alert(data.message);
           console.log(data);
           $scope.mark = data.data;
 
@@ -225,6 +231,7 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
         success: function(data) {
           console.log("文件夹详情");
           console.log(data);
+          Global.alert(data.message);
           $scope.folder = data.data;
         }
       });
