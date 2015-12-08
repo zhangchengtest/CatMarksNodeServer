@@ -132,7 +132,7 @@ router.post('/join', function(req, res, next) {
   //密码不能为空，6-15个数字或英文字符
   var joinCheckResult = validator.isAlphanumeric(joinInfo.username) && validator.isEmail(joinInfo.email) && validator.isLength(joinInfo.username, 5, 10) && validator.isLength(req.body.password, 6, 15);
   if (joinCheckResult) {
-    console.log("格式通过");
+    //console.log("格式通过");
     //检查用户和邮箱是否存在
     var findUserParams = {
       "$or": [{
@@ -141,7 +141,7 @@ router.post('/join', function(req, res, next) {
       }]
     }
     SqlOperation.findSpecify('users', findUserParams, function(err, results) {
-      console.log("====检查用户是否存在====");
+      //console.log("====检查用户是否存在====");
       //异常处理
       if (err) return next(err);
 
@@ -152,7 +152,7 @@ router.post('/join', function(req, res, next) {
       } else {
         //注册用户
         SqlOperation.insert('users', joinInfo, function(err, results) {
-          console.log("====注册用户====");
+          //console.log("====注册用户====");
           //异常处理
           if (err) return next(err);
           //console.log(results);
@@ -183,7 +183,7 @@ router.post('/join', function(req, res, next) {
                 }, function(err, results) {
                   //异常处理
                   if (err) return next(err);
-                  console.log("用默认文件夹添加结果");
+                  //console.log("用默认文件夹添加结果");
                   //console.log(results);
                   if (results.result.ok == 1) {
                     //为用户创建默认文件夹
