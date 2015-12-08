@@ -3,7 +3,9 @@ var MongoClient = require('mongodb').MongoClient,
   assert = require('assert'),
   mongodb = require('mongodb'),
   config = require('./config.js');
-var url = config.db.uri;
+
+var url = config.db.uri_easy;
+
 var SqlOperation = function() {};
 module.exports = SqlOperation;
 
@@ -11,104 +13,143 @@ module.exports = SqlOperation;
 SqlOperation.prototype.ObjectID = function(id) {
   return mongodb.ObjectID(id);
 }
-MongoClient.connect(url, function(err, db) {
-  // if (err) {
-  //   callback(err, null);
-  // }
-  //console.log("\033[36m" + "1 Connected correctly to server" + "/\033[39m");
-  // SqlOperation.prototype.insert = function(collectionName, insertString, callback) {
-  //   insert(db, collectionName, insertString, function(err, results) {
-  //     callback(err, results);
-  //   });
-  // };
-  // SqlOperation.prototype.update = function(collectionName, queryString, updateString, callback) {
-  //   update(db, collectionName, queryString, updateString, function(err, results) {
-  //     callback(err, results);
-  //   })
-  // };
-  // SqlOperation.prototype.replace = function(collectionName, queryString, replaceString, callback) {
-  //   replaceOne(db, collectionName, queryString, replaceString, function(err, results) {
-  //     callback(err, results);
-  //   })
-  // };
-  // SqlOperation.prototype.findAll = function(collectionName, callback) {
-  //   findAll(db, collectionName, function(err, results) {
-  //     callback(err, results);
-  //   })
-  // };
-  // SqlOperation.prototype.findSpecify = function(collectionName, queryString, callback) {
-  //   findSpecify(db, collectionName, queryString, function(err, results) {
-  //     callback(err, results);
-  //   })
-  // };
-  // SqlOperation.prototype.findMany = function(collectionName, queryString, callback) {
-  //   findMany(db, collectionName, queryString, function(err, results) {
-  //     callback(err, results);
-  //   })
-  // };
-  SqlOperation.prototype.distinct = function(collectionName, queryString, distinctString, callback) {
-    distinct(db, collectionName, queryString, distinctString, function(err, results) {
-      callback(err, results);
-    })
-  };
-  SqlOperation.prototype.sort = function(collectionName, queryString, sortString, callback) {
-    sort(db, collectionName, queryString, sortString, function(err, results) {
-      callback(err, results);
-    })
-  };
-  SqlOperation.prototype.removeOne = function(collectionName, queryString, callback) {
-    removeOne(db, collectionName, queryString, function(err, results) {
-      callback(err, results);
-    })
-  };
-  SqlOperation.prototype.removeMany = function(collectionName, queryString, callback) {
-    removeMany(db, collectionName, queryString, function(err, results) {
-      callback(err, results);
-    })
-  };
-});
-MongoClient.connect(url, function(err, db) {
-  // if (err) {
-  //   callback(err, null);
-  // }
-  //console.log("\033[36m" + "2Connected correctly to server" + "/\033[39m");
-  SqlOperation.prototype.insert = function(collectionName, insertString, callback) {
+SqlOperation.prototype.insert = function(collectionName, insertString, callback) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      callback(err, null);
+    }
+    assert.equal(null, err);
+    console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
     insert(db, collectionName, insertString, function(err, results) {
+      db.close();
       callback(err, results);
     });
-  };
-  SqlOperation.prototype.update = function(collectionName, queryString, updateString, callback) {
+  });
+};
+SqlOperation.prototype.update = function(collectionName, queryString, updateString, callback) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      callback(err, null);
+    }
+    assert.equal(null, err);
+    console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
     update(db, collectionName, queryString, updateString, function(err, results) {
+      db.close();
       callback(err, results);
     })
-  };
-  SqlOperation.prototype.replace = function(collectionName, queryString, replaceString, callback) {
+  });
+};
+SqlOperation.prototype.replace = function(collectionName, queryString, replaceString, callback) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      callback(err, null);
+    }
+    assert.equal(null, err);
+    console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
     replaceOne(db, collectionName, queryString, replaceString, function(err, results) {
+      db.close();
       callback(err, results);
     })
-  };
-  SqlOperation.prototype.findAll = function(collectionName, callback) {
+  });
+};
+SqlOperation.prototype.findAll = function(collectionName, callback) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      callback(err, null);
+    }
+    assert.equal(null, err);
+    console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
     findAll(db, collectionName, function(err, results) {
+      db.close();
       callback(err, results);
     })
-  };
-  SqlOperation.prototype.findSpecify = function(collectionName, queryString, callback) {
+  });
+};
+SqlOperation.prototype.findSpecify = function(collectionName, queryString, callback) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      callback(err, null);
+    }
+    assert.equal(null, err);
+    console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
     findSpecify(db, collectionName, queryString, function(err, results) {
+      db.close();
       callback(err, results);
     })
-  };
-  SqlOperation.prototype.findMany = function(collectionName, queryString, callback) {
+  });
+};
+SqlOperation.prototype.findMany = function(collectionName, queryString, callback) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      callback(err, null);
+    }
+    assert.equal(null, err);
+    console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
     findMany(db, collectionName, queryString, function(err, results) {
+      db.close();
       callback(err, results);
     })
-  };
-
-});
+  });
+};
+SqlOperation.prototype.distinct = function(collectionName, queryString, distinctString, callback) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      callback(err, null);
+    }
+    assert.equal(null, err);
+    console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
+    distinct(db, collectionName, queryString, distinctString, function(err, results) {
+      db.close();
+      callback(err, results);
+    })
+  });
+};
+SqlOperation.prototype.sort = function(collectionName, queryString, sortString, callback) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      callback(err, null);
+    }
+    assert.equal(null, err);
+    console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
+    sort(db, collectionName, queryString, sortString, function(err, results) {
+      db.close();
+      callback(err, results);
+    })
+  });
+};
+SqlOperation.prototype.removeOne = function(collectionName, queryString, callback) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      callback(err, null);
+    }
+    assert.equal(null, err);
+    console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
+    removeOne(db, collectionName, queryString, function(err, results) {
+      db.close();
+      callback(err, results);
+    })
+  });
+};
+SqlOperation.prototype.removeMany = function(collectionName, queryString, callback) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      callback(err, null);
+    }
+    assert.equal(null, err);
+    console.log("\033[36m" + "Connected correctly to server" + "/\033[39m");
+    removeMany(db, collectionName, queryString, function(err, results) {
+      db.close();
+      callback(err, results);
+    })
+  });
+};
 //=================Global Function======================//
 //insert
 var insert = function(db, collectionName, insertString, callback) {
   var collection = db.collection(collectionName);
   collection.insert(insertString, function(err, results) {
+    assert.equal(err, null);
+    //console.log("Inserted " + insertString.length + " document into the " + collectionName + " collection");
     callback(err, results);
   });
 }
@@ -116,8 +157,8 @@ var insertDocument = function(db, collectionName, insertString, callback) {
   var collection = db.collection(collectionName);
   collection.insertOne(insertString, function(err, results) {
     assert.equal(err, null);
-    //console.log("Inserted a document into the " + collectionName + " collection");
-    ////console.log(results);
+    console.log("Inserted a document into the " + collectionName + " collection");
+    //console.log(results);
     callback(err, results);
   });
 }
@@ -125,8 +166,8 @@ var insertDocuments = function(db, collectionName, insertString, callback) {
     var collection = db.collection(collectionName);
     collection.insertMany(insertString, function(err, results) {
       assert.equal(err, null);
-      //console.log("Inserted " + insertString.length + " documents into the " + collectionName + " collection");
-      ////console.log(results);
+      console.log("Inserted " + insertString.length + " documents into the " + collectionName + " collection");
+      //console.log(results);
       callback(err, results);
     });
   }
@@ -134,12 +175,12 @@ var insertDocuments = function(db, collectionName, insertString, callback) {
 var findAll = function(db, collectionName, callback) {
   var returnResult = [];
   var cursor = db.collection(collectionName).find();
-  //console.log("find all documents in " + collectionName + " collection");
+  console.log("find all documents in " + collectionName + " collection");
   cursor.each(function(err, result) {
 
     assert.equal(err, null);
     if (result != null) {
-      ////console.log(result);
+      //console.log(result);
       returnResult.push(result);
     } else {
       callback(err, returnResult);
@@ -150,12 +191,12 @@ var findMany = function(db, collectionName, queryString, callback) {
   var returnResult = [];
   //var objectId = new mongo.ObjectID(queryString._id);
   var cursor = db.collection(collectionName).find(queryString);
-  //console.log("find some documents in " + collectionName + " collection");
+  console.log("find some documents in " + collectionName + " collection");
   cursor.each(function(err, result) {
 
     assert.equal(err, null);
     if (result != null) {
-      ////console.log(result);
+      //console.log(result);
       returnResult.push(result);
     } else {
       callback(err, returnResult);
@@ -167,7 +208,7 @@ var findSpecify = function(db, collectionName, queryString, callback) {
   var returnResult;
   //var objectId = new mongo.ObjectID(queryString._id);
   var cursor = db.collection(collectionName).find(queryString);
-  //console.log("find a  documents in " + collectionName + " collection");
+  console.log("find a  documents in " + collectionName + " collection");
   cursor.each(function(err, results) {
     assert.equal(err, null);
     if (results != null) {
@@ -195,7 +236,7 @@ var sort = function(db, collectionName, queryString, sortString, callback) {
 
   var returnResult = [];
   var cursor = db.collection(collectionName).find(queryString).sort(sortString);
-  //console.log("find some documents in " + collectionName + " collection with  sort");
+  console.log("find some documents in " + collectionName + " collection with  sort");
   cursor.each(function(err, result) {
     assert.equal(err, null);
     if (result != null) {
@@ -207,13 +248,13 @@ var sort = function(db, collectionName, queryString, sortString, callback) {
 };
 //update
 var update = function(db, collectionName, queryString, updateString, callback) {
-  //console.log(queryString);
-  //console.log(updateString);
+  console.log(queryString);
+  console.log(updateString);
   db.collection(collectionName).update(
     queryString,
     updateString,
     function(err, results) {
-      ////console.log(results);
+      //console.log(results);
       callback(err, results);
     });
 };
@@ -222,7 +263,7 @@ var updateSpecify = function(db, collectionName, queryString, updateString, call
     queryString,
     updateString,
     function(err, results) {
-      ////console.log(results);
+      //console.log(results);
       callback(err, results);
     });
 };
@@ -231,7 +272,7 @@ var updateMany = function(db, collectionName, queryString, updateString, callbac
     queryString,
     updateString,
     function(err, results) {
-      ////console.log(results);
+      //console.log(results);
       callback(err, results);
     });
 };

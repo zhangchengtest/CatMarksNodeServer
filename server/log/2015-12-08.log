@@ -1,0 +1,59 @@
+4进程退出
+----14495543667553进程退出
+----14495543667745进程退出
+----14495543694186进程退出
+----14495543694468进程退出
+----14495543694497进程退出
+----1449554369479TypeError: Cannot read property 'collection' of null
+----1449554591146TypeError: Cannot read property 'collection' of null
+----1449554856620TypeError: Cannot read property 'collection' of null
+----1449554875206TypeError: Cannot read property 'collection' of null
+----1449554893107TypeError: Cannot read property 'collection' of null
+----1449554935758TypeError: Cannot read property 'collection' of null
+----1449555166428TypeError: Cannot read property 'collection' of null
+----1449555179170TypeError: Cannot read property 'collection' of null
+----1449555287542TypeError: Cannot read property 'collection' of null
+----1449555339961TypeError: SqlOperation.findSpecify is not a function
+----1449555357832TypeError: Cannot read property 'collection' of null
+----1449555382766TypeError: Cannot read property 'collection' of null
+----14495554570381进程退出
+----14495554658134进程退出
+----14495554658233进程退出
+----14495554658242进程退出
+----1449555465824TypeError: Cannot read property 'collection' of null
+----1449555476104TypeError: Cannot read property 'collection' of null
+----14495555202463进程退出
+----14495555831492进程退出
+----14495555832064进程退出
+----14495556239811进程退出
+----14495556240451进程退出
+----14495556712354进程退出
+----14495556712981进程退出
+----14495557100034进程退出
+----14495557100633进程退出
+----14495557417104进程退出
+----1449555741760TypeError: SqlOperation.findSpecify is not a function
+----14495557578012进程退出
+----14495557579662进程退出
+----14495557858271进程退出
+----14495557858893进程退出
+----14495558630304进程退出
+----14495558631002进程退出
+----14495558741466进程退出
+----14495558742001进程退出
+----14495559128054进程退出
+----14495559128911进程退出
+----14495559504362进程退出
+----1449555950506TypeError: SqlOperation.findSpecify is not a function
+----1449556031769TypeError: SqlOperation.findSpecify is not a function
+----14495560318252进程退出
+----14495560795654进程退出
+----14495560796321进程退出
+----14495561345224进程退出
+----14495561345743进程退出
+----14495562146932进程退出
+----14495562147963进程退出
+----14495564385974进程退出
+----14495564386572进程退出
+----14495565543873进程退出
+----1449556554451

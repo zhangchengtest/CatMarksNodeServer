@@ -1,5 +1,5 @@
 var Global = {
-  uri: "http://192.168.1.107:3000",
+  uri: "http://localhost:3000",
   token: $.cookie("token"),
   user_id: $.cookie("user_id"),
   alert: function(content) {

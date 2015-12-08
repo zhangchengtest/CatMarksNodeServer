@@ -4,7 +4,6 @@ var cluster = require('cluster'),
   sendEmail = require('./tools/email.js');
 
 if (cluster.isMaster) {
-
   console.log('[master] ' + "start master...");
 
   for (var i = 0; i < numCPUs; i++) {

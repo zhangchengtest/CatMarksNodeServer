@@ -1,7 +1,7 @@
 var express = require('express'),
   bodyParser = require('body-parser'),
   validator = require('validator'),
-  SqlOperation = require('../tools/sqloperation1.js'),
+  SqlOperation = require('../tools/sqloperation.js'),
   config = require('../tools/config.js');
 
 var router = express.Router(),
@@ -65,8 +65,8 @@ router.post('/', function(req, res, next) {
     });
   } else {
     res.status(200).send(config.folderRes.status4001);
-    console.log("文件夹校验结果");
-    console.log(check1 + " " + check2);
+    //console.log("文件夹校验结果");
+    //console.log(check1 + " " + check2);
   }
 });
 //获取指定文件夹
@@ -106,8 +106,8 @@ router.get('/:id', function(req, res, next) {
     });
   } else {
     res.status(200).send(config.folderRes.status4001);
-    console.log("文件夹校验结果");
-    console.log(check1 + " " + check2);
+    //console.log("文件夹校验结果");
+    //console.log(check1 + " " + check2);
   }
 
 });
@@ -161,8 +161,8 @@ router.get('/', function(req, res, next) {
     });
   } else {
     res.status(200).send(config.folderRes.status4001);
-    console.log("文件夹校验结果");
-    console.log(check1 + " " + check2);
+    //console.log("文件夹校验结果");
+    //console.log(check1 + " " + check2);
   }
 });
 //更新文件夹
@@ -182,10 +182,10 @@ router.put('/:id', function(req, res, next) {
       updateInfo[key] = folderInfo[key]
     }
   }
-  console.log("folder信息");
-  console.log(folderInfo);
-  console.log("更新信息");
-  console.log(updateInfo);
+  //console.log("folder信息");
+  //console.log(folderInfo);
+  //console.log("更新信息");
+  //console.log(updateInfo);
   var user_id = SqlOperation.ObjectID(req.body.user_id);
   //格式校验
   var check1 = validator.isMongoId(req.body.user_id),
@@ -222,8 +222,8 @@ router.put('/:id', function(req, res, next) {
     });
   } else {
     res.status(200).send(config.folderRes.status4001);
-    console.log("文件夹校验结果");
-    console.log(check1 + " " + check2);
+    //console.log("文件夹校验结果");
+    //console.log(check1 + " " + check2);
   }
 });
 //获取文件夹下所有书签
@@ -272,8 +272,8 @@ router.get('/marks/:id', function(req, res, next) {
     });
   } else {
     res.status(200).send(config.markRes.status3001);
-    console.log("书签校验结果");
-    console.log(check1 + " " + check2 + " " + check3);
+    //console.log("书签校验结果");
+    //console.log(check1 + " " + check2 + " " + check3);
   }
 });
 module.exports = router;

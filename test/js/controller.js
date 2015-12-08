@@ -1,19 +1,19 @@
 var netMarks = angular.module('netMarks', []);
 netMarks.filter('folderIdToTitle', function() {
-  return function(input) {
-    $.each(Global.folders, function(key, value) {
-      if (value._id == input) {
-        input = value.title;
-      }
-    });
-    return input
-  }
-})
-.filter('trustHTML', function ($sce) {
-    return function (input) {
-        return $sce.trustAsHtml(input);
+    return function(input) {
+      $.each(Global.folders, function(key, value) {
+        if (value._id == input) {
+          input = value.title;
+        }
+      });
+      return input
     }
-})
+  })
+  .filter('trustHTML', function($sce) {
+    return function(input) {
+      return $sce.trustAsHtml(input);
+    }
+  })
 netMarks.controller('netMarksIndex', function($http, $scope) {
   $scope.getFolders = function() {
     //获取文件夹列表，不含根目录
@@ -33,7 +33,9 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
       success: function(data) {
         console.log("文件夹列表");
         console.log(data);
-        Global.alert(data.message);
+        if (data.code != 4000) {
+          Global.alert(data.message);
+        }
         $scope.folders = data.data;
       }
     });
@@ -54,7 +56,9 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
       success: function(data) {
         console.log("userinfo");
         console.log(data);
-        Global.alert(data.message);
+        if (data.code != 1000) {
+          Global.alert(data.message);
+        }
         $scope.user = data.data;
       }
     });
@@ -76,7 +80,9 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
       success: function(data) {
         console.log("书签列表");
         console.log(data);
-        Global.alert(data.message);
+        if (data.code != 3000) {
+          Global.alert(data.message);
+        }
         $scope.marks = data.data;
       }
     });
@@ -98,7 +104,9 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
       success: function(data) {
         console.log("标签列表");
         console.log(data);
-        Global.alert(data.message);
+        if (data.code != 3000) {
+          Global.alert(data.message);
+        }
         var tags = "";
         $.each(data.data, function(key, value) {
           if (value) {
@@ -134,7 +142,9 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
       success: function(data) {
         console.log("query书签列表");
         console.log(data);
-        Global.alert(data.message);
+        if (data.code != 3000) {
+          Global.alert(data.message);
+        }
         $scope.marks = data.data;
       }
     });
@@ -166,7 +176,9 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
       success: function(data) {
         console.log("书签列表");
         console.log(data);
-        Global.alert(data.message);
+        if (data.code != 3000) {
+          Global.alert(data.message);
+        }
         $scope.marks = data.data;
         $scope.showFolder(id);
 
@@ -197,7 +209,9 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
         },
         success: function(data) {
           console.log("书签详情");
-          Global.alert(data.message);
+          if (data.code != 3000) {
+            Global.alert(data.message);
+          }
           console.log(data);
           $scope.mark = data.data;
 
@@ -231,7 +245,9 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
         success: function(data) {
           console.log("文件夹详情");
           console.log(data);
-          Global.alert(data.message);
+          if (data.code != 4000) {
+            Global.alert(data.message);
+          }
           $scope.folder = data.data;
         }
       });
@@ -358,7 +374,7 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
         },
         success: function(data) {
           $(obj).parents('.mark-li')[0].remove();
-          swal("已删除!",data.message, "success");
+          swal("已删除!", data.message, "success");
         }
       });
     });
@@ -390,7 +406,7 @@ netMarks.controller('netMarksIndex', function($http, $scope) {
         },
         success: function(data) {
           $(obj).parents('.mark-li')[0].remove();
-          swal("已删除!",data.message, "success");
+          swal("已删除!", data.message, "success");
         }
       });
     });

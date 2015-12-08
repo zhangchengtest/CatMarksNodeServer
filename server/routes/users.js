@@ -6,7 +6,7 @@ var express = require('express'),
   uuid = require('uuid'),
   validator = require('validator'),
   md5 = require('md5'),
-  SqlOperation = require('../tools/sqloperation1.js'),
+  SqlOperation = require('../tools/sqloperation.js'),
   config = require('../tools/config.js')
 sendEmail = require('../tools/email.js');
 
@@ -42,12 +42,9 @@ router.post('/login', function(req, res, next) {
     }
   }
 
-
-
   //登录信息格式校验
   //用户名不能为空，5-10个数字或英文字符
   //密码不能为空，6-15个数字或英文字符
-
 
   if (checkResult) {
     SqlOperation.findSpecify('users', loginParams, function(err, results) {
@@ -68,8 +65,8 @@ router.post('/login', function(req, res, next) {
             //异常处理
             if (err) return next(err);
 
-            console.log("登录时间更新结果");
-            console.log(results);
+            //console.log("登录时间更新结果");
+            //console.log(results);
           });
           //移除旧的token并创建新的token
           SqlOperation.removeMany('tokens', {
@@ -95,23 +92,23 @@ router.post('/login', function(req, res, next) {
                   config.usersRes.status1000.token = token;
                   res.status(200).send(config.usersRes.status1000);
                 } else {
-                  console.log("token插入失败");
+                  //console.log("token插入失败");
                   res.status(200).send(config.tokenRes.status2005);
                 }
               })
             }
           });
         } else {
-          console.log("密码错误");
+          //console.log("密码错误");
           res.status(200).json(config.usersRes.status1007);
         }
       } else {
-        console.log("账号不存在");
+        //console.log("账号不存在");
         res.status(200).json(config.usersRes.status1008);
       }
     });
   } else {
-    console.log("格式不正确");
+    //console.log("格式不正确");
     res.status(200).json(config.usersRes.status1010);
   }
 });
@@ -128,8 +125,8 @@ router.post('/join', function(req, res, next) {
     level: 0,
     status: 1
   };
-  console.log("注册信息：");
-  console.log(joinInfo);
+  //console.log("注册信息：");
+  //console.log(joinInfo);
   //注册信息格式校验
   //用户名不能为空，5-10个数字或英文字符
   //密码不能为空，6-15个数字或英文字符
@@ -139,8 +136,7 @@ router.post('/join', function(req, res, next) {
     //检查用户和邮箱是否存在
     var findUserParams = {
       "$or": [{
-        "username": req.body.username
-      }, {
+        "username": req.body.username}, {
         "email": req.body.email
       }]
     }
@@ -149,7 +145,7 @@ router.post('/join', function(req, res, next) {
       //异常处理
       if (err) return next(err);
 
-      console.log(results);
+      //console.log(results);
 
       if (results) {
         res.status(200).send(config.usersRes.status1005);
@@ -159,7 +155,7 @@ router.post('/join', function(req, res, next) {
           console.log("====注册用户====");
           //异常处理
           if (err) return next(err);
-          console.log(results);
+          //console.log(results);
           if (results.result.ok == 1) {
             //注册用户信息
             var userJoinInfo = results.ops[0];
@@ -188,7 +184,7 @@ router.post('/join', function(req, res, next) {
                   //异常处理
                   if (err) return next(err);
                   console.log("用默认文件夹添加结果");
-                  console.log(results);
+                  //console.log(results);
                   if (results.result.ok == 1) {
                     //为用户创建默认文件夹
                     var folderInfo = {
@@ -213,7 +209,7 @@ router.post('/join', function(req, res, next) {
                         //   html: '<b>Thank you !</b>'
                         // };
                         // sendEmail(mailOptions, function(results) {
-                        //   console.log(results);
+                        //   //console.log(results);
                         // })
                         res.status(200).send(config.usersRes.status1000);
                       } else {
@@ -237,26 +233,21 @@ router.post('/join', function(req, res, next) {
       }
     });
   } else {
-    console.log("注册格式不对");
+    //console.log("注册格式不对");
     res.status(200).json(config.usersRes.status1010);
   }
 });
 //获得所有用户信息
-router.get('/', function(req, res, next) {
-  SqlOperation.findAll('users', function(err, results) {
-    console.log("====获取所有用户信息====");
-    //异常处理
-    if (err) return next(err);
-
-    config.usersRes.status1000.data = results;
-    res.status(200).json(config.usersRes.status1000);
-  });
-});
-
-//获得所有用户信息
-router.get('/all', function(req, res, value, next) {
-  //console.log(ss);
-});
+// router.get('/', function(req, res, next) {
+//   SqlOperation.findAll('users', function(err, results) {
+//     //console.log("====获取所有用户信息====");
+//     //异常处理
+//     if (err) return next(err);
+//
+//     config.usersRes.status1000.data = results;
+//     res.status(200).json(config.usersRes.status1000);
+//   });
+// });
 
 //通过用户ID和token获取用户信息
 router.get('/:id', function(req, res, next) {
@@ -270,8 +261,8 @@ router.get('/:id', function(req, res, next) {
     if (err) return next(err);
 
     if (results) {
-      console.log("token返回结果");
-      console.log(results);
+      //console.log("token返回结果");
+      //console.log(results);
       if (results.user_id == req.params.id && results.token == token && nowTime <= results.delete_time) {
         SqlOperation.findSpecify('users', {
           _id: userId
@@ -287,7 +278,7 @@ router.get('/:id', function(req, res, next) {
           }
         });
       } else if (nowTime > results.deleteTime) {
-        console.log("token过期");
+        //console.log("token过期");
         //删除token
         SqlOperation.removeOne('tokens', {
           token: token
@@ -303,11 +294,11 @@ router.get('/:id', function(req, res, next) {
         });
 
       } else {
-        console.log("token无效");
+        //console.log("token无效");
         res.status(200).send(config.tokenRes.status2003);
       }
     } else {
-      console.log("token不存在");
+      //console.log("token不存在");
       res.status(200).send(config.tokenRes.status2002);
     }
   });

@@ -1,7 +1,7 @@
 var express = require('express'),
   bodyParser = require('body-parser'),
   validator = require('validator'),
-  SqlOperation = require('../tools/sqloperation1.js'),
+  SqlOperation = require('../tools/sqloperation.js'),
   config = require('../tools/config.js'),
   read = require('node-readability');
 
@@ -28,8 +28,8 @@ router.post('/', function(req, res, next) {
     "status": 1,
     "date": Date.now()
   };
-  console.log("用户提交的书签信息");
-  console.log(markInfo);
+  //console.log("用户提交的书签信息");
+  //console.log(markInfo);
   //检查提交的格式
   var check = validator.isMongoId(markInfo.user_id) && validator.isUUID(req.body.token, 4);
   //判断token是否有效并且属于该用户
@@ -86,8 +86,8 @@ router.post('/', function(req, res, next) {
     });
   } else {
     res.status(200).send(config.markRes.status3001);
-    console.log("书签校验结果");
-    console.log(check1 + " " + check2);
+    //console.log("书签校验结果");
+    //console.log(check1 + " " + check2);
   }
 });
 //获取指定书签
@@ -127,8 +127,8 @@ router.get('/:id', function(req, res, next) {
     });
   } else {
     res.status(200).send(config.markRes.status3001);
-    console.log("书签校验结果");
-    console.log(check1 + " " + check2);
+    //console.log("书签校验结果");
+    //console.log(check1 + " " + check2);
   }
 
 });
@@ -174,8 +174,8 @@ router.get('/', function(req, res, next) {
     });
   } else {
     res.status(200).send(config.markRes.status3001);
-    console.log("书签校验结果");
-    console.log(check1 + " " + check2);
+    //console.log("书签校验结果");
+    //console.log(check1 + " " + check2);
   }
 });
 //更新书签
@@ -199,8 +199,8 @@ router.put('/:id', function(req, res, next) {
       updateInfo[key] = markInfo[key]
     }
   }
-  console.log("书签更新");
-  console.log(updateInfo);
+  //console.log("书签更新");
+  //console.log(updateInfo);
   var user_id = SqlOperation.ObjectID(req.body.user_id);
   //格式校验
   var check1 = validator.isMongoId(req.body.user_id),
@@ -239,8 +239,8 @@ router.put('/:id', function(req, res, next) {
     });
   } else {
     res.status(200).send(config.markRes.status3001);
-    console.log("书签校验结果");
-    console.log(check1 + " " + check2);
+    //console.log("书签校验结果");
+    //console.log(check1 + " " + check2);
   }
 });
 module.exports = router;
